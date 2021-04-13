@@ -45,7 +45,7 @@ const Home = ({ data }) => {
       <Helmet>
         <title>{siteMetadata.title}</title>
         <meta name="description" content={siteMetadata.description} />
-        <meta property="og:title" content={`$${siteMetadata.title}`} />
+        <meta property="og:title" content={`${siteMetadata.title}`} />
         <meta property="og:url" content={`https://yyna.dev`} />
         <meta property="og:image" content={`https://yyna.dev/_thumbnail.png`} />
         <meta property="og:image:width" content="900" />
