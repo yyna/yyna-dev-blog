@@ -3,7 +3,7 @@ title: fastify.js, typeORM, typescript 를 이용한 RESTful API 만들기 (1)
 description: 프로젝트를 생성하고 모델을 작성해봅시다.
 date: 2020-05-07
 tags: ['fastify.js', 'typeORM', 'typescript']
-published: true
+published: false
 image: /images/fastifyjs-typeORM-typescript-를-이용한-RESTful-API-만들기-1/_thumbnail.png
 disqusIdentifier: building-rest-api-using-fastify-typescript-typeorm-1
 ---
