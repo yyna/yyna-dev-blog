@@ -30,7 +30,12 @@ export default function Layout({ children }) {
       <section className={styles.footer}>
         <div className="container">
           @ 2021 - Web app coded by{' '}
-          <a href="https://yyna.dev">Jungin Kwon 🙋🏻‍♀️</a>
+          <a href="https://yyna.dev">
+            Jungin Kwon{' '}
+            <span role="img" aria-label="woman-raising-hand">
+              🙋🏻‍♀️
+            </span>
+          </a>
         </div>
       </section>
     </>
