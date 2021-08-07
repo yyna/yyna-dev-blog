@@ -23,10 +23,10 @@ a {
 
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css');
 
-* {
+*:not(code, kdb, samp) {
   font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto,
     'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR',
-    'Malgun Gothic', sans-serif;
+    'Malgun Gothic', sans-serif !important;
 }
 
 .button {
@@ -50,4 +50,10 @@ a {
 .button.blue {
   color: white;
   background-color: #845ef7;
+}
+
+pre {
+  padding: 1em;
+  background-color: #f0f0f0;
+  overflow: scroll;
 }

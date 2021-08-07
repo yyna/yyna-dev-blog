@@ -3,7 +3,7 @@ title: fastify.js, typeORM, typescript 를 이용한 RESTful API 만들기 (2)
 description: Route 생성를 생성하고 Middleware, Handler 작성해봅시다.
 date: 2020-05-07
 tags: ['fastify.js', 'typeORM', 'typescript']
-published: false
+published: true
 image: /images/fastifyjs-typeORM-typescript-를-이용한-RESTful-API-만들기-2/_thumbnail.png
 disqusIdentifier: building-rest-api-using-fastify-typescript-typeorm-2
 ---
