@@ -22,69 +22,87 @@ fastify.js 와 PostgreSQL 공부를 위해 간단한 프로젝트를 만들어�
 
 ### 프로젝트 설정
 
-1. initialize npm project
-   ```
-   npm init -y
-   ```
-2. install npm packages
-   ```
-   npm install --save fastify fastify-jwt fastify-plugin pg typeorm bcrypt
-   ```
-   - fastify
-   - fastify-plugin
-   - fastify-jwt: JWT 토큰을 이용한 인증을 구현하기 위해 사용합니다.
-   - pg: PostgreSQL 클라이언트
-   - typeorm
-   - bcrypt: 회원가입/로그인 기능 구현 시 비밀번호 암호화에 사용합니다.
-   ```
-   npm install --save-dev @types/bcrypt @types/node typescript ts-node
-   ```
-   - typescript 사용을 위한 패키지 설치
-3. 타입스크립트 설정 파일 생성
+#### 1. 프로젝트 생성
 
-   ```
-   npx tsc --init
-   ```
+```
+mkdir fastify-typescript-typeorm
+cd fastify-typescript-typeorm
+```
 
-   위 명령어를 입력하면 tsconfig.json 이라는 파일이 생깁니다. Model 작성을 위해 아래 표시된 두 옵션만 변경해줍니다.
+#### 2. initialize npm project
 
-   ```javascript
-   {
-       "strictPropertyInitialization": false,
-       "experimentalDecorators": true
-   }
-   ```
+```
+npm init -y
+```
 
-   - experimentalDecorators: ES7 에서 추가된 decorator 를 사용하기 위해 true 로 변경해줍니다.  
-     [ES7 decorator 에 관해 참조할만한 블로그](https://medium.com/google-developers/exploring-es7-decorators-76ecb65fb841)
-   - strictPropertyInitialization: 모델 클래스에선 property에 값을 초기화하지 않기 때문에 false 로 변경해줍니다.
+#### 3. install npm packages
 
-4. package.json 에 start script 추가하기
+```
+npm install --save fastify fastify-jwt fastify-plugin pg typeorm bcrypt
+```
 
-   ```javascript
-   {
-       "scripts": {
-            "start": "ts-node --files ./src/index.ts"
-        }
-   }
-   ```
+- fastify
+- fastify-plugin
+- fastify-jwt: JWT 토큰을 이용한 인증을 구현하기 위해 사용합니다.
+- pg: PostgreSQL 클라이언트
+- typeorm
+- bcrypt: 회원가입/로그인 기능 구현 시 비밀번호 암호화에 사용합니다.
+
+```
+npm install --save-dev @types/bcrypt @types/node typescript ts-node
+```
+
+- typescript 사용을 위한 패키지 설치
+
+#### 4. 타입스크립트 설정 파일 생성
+
+```
+npx tsc --init
+```
+
+위 명령어를 입력하면 tsconfig.json 이라는 파일이 생깁니다. Model 작성을 위해 아래 표시된 두 옵션만 변경해줍니다.
+
+```javascript
+{
+    "strictPropertyInitialization": false,
+    "experimentalDecorators": true
+}
+```
+
+- experimentalDecorators: ES7 에서 추가된 decorator 를 사용하기 위해 true 로 변경해줍니다.  
+  [ES7 decorator 에 관해 참조할만한 블로그](https://medium.com/google-developers/exploring-es7-decorators-76ecb65fb841)
+- strictPropertyInitialization: 모델 클래스에선 property에 값을 초기화하지 않기 때문에 false 로 변경해줍니다.
+
+#### 5. package.json 에 start script 추가하기
+
+```javascript
+{
+    "scripts": {
+         "start": "ts-node --files ./src/index.ts"
+     }
+}
+```
 
 ### fastify 인스턴스 (서버) 실행
 
 ```javascript
 // src/index.ts
-import fastify from 'fastify';
+import fastify, {
+  FastifyRequest,
+  FastifyReply,
+  FastifyInstance,
+} from 'fastify';
 import { Server, IncomingMessage, ServerResponse } from 'http';
 
 const PORT = process.env.PORT || '3000';
-const server: fastify.FastifyInstance<
+const server: FastifyInstance<
   Server,
   IncomingMessage,
   ServerResponse
 > = fastify({ logger: true });
 
 // test code
-server.get('/', async (request, reply) => {
+server.get('/', async (request: FastifyRequest, reply: FastifyReply) => {
   return { hello: 'world' };
 });
 
@@ -99,69 +117,71 @@ server.listen(+PORT, '0.0.0.0', (err) => {
 
 ### 모델 생성
 
-1. Memo 모델 생성하기
-
-   ```javascript
-   // src/modules/memo/entity.ts
-   import {
-     CreateDateColumn,
-     Column,
-     Entity,
-     PrimaryGeneratedColumn,
-     UpdateDateColumn,
-   } from 'typeorm';
-
-   @Entity()
-   export class Memo {
-     @PrimaryGeneratedColumn()
-     id: number;
-
-     @Column({ type: 'varchar', length: 20, nullable: false })
-     title: string;
-
-     @Column({ type: 'varchar', length: 1000, nullable: false })
-     content: string;
-
-     @CreateDateColumn()
-     created_at: Date;
-
-     @UpdateDateColumn()
-     updated_at: Date;
-   }
-   ```
-
-2. 데이터베이스 연결 decorator 생성  
-    fastify 인스턴스에 새로운 property 를 추가하는 decorate 라는 API가 있습니다. 자세한 설명은 [https://www.fastify.io/docs/v1.14.x/Decorators/](https://www.fastify.io/docs/v1.14.x/Decorators/) 를 참고해주세요.
-
-   ```javascript
-   // src/decorators/db.ts
-   import fp from 'fastify-plugin';
-   import { createConnection, getConnectionOptions } from 'typeorm';
-   import { Memo } from '../modules/memo/entity';
-
-   export default fp(async (fastify) => {
-     try {
-       const connectionOptions = await getConnectionOptions();
-       const connection = await createConnection(connectionOptions);
-
-       fastify.decorate('db', {
-         memo: connection.getRepository(Memo),
-       });
-     } catch (error) {
-       console.log(error);
-     }
-   });
-   ```
-
-   memo repository를 포함한 'db' decorator 를 생성합니다.
-
-3. fastify 인스턴스에 'db' decorator 추가
+#### 1. Memo 모델 생성하기
 
 ```javascript
+// src/modules/memo/entity.ts
+import {
+  CreateDateColumn,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
+@Entity()
+export class Memo {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ type: 'varchar', length: 20, nullable: false })
+  title: string;
+
+  @Column({ type: 'varchar', length: 1000, nullable: false })
+  content: string;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+}
+```
+
+#### 2. 데이터베이스 연결 decorator 생성
+
+fastify 인스턴스에 새로운 property 를 추가하는 decorate 라는 API가 있습니다. 자세한 설명은 [https://www.fastify.io/docs/v1.14.x/Decorators/](https://www.fastify.io/docs/v1.14.x/Decorators/) 를 참고해주세요.
+
+```javascript
+// src/decorators/db.ts
+import fp from 'fastify-plugin';
+import { createConnection, getConnectionOptions } from 'typeorm';
+import { Memo } from '../modules/memo/entity';
+
+export default fp(async (fastify) => {
+  try {
+    const connectionOptions = await getConnectionOptions();
+    const connection = await createConnection(connectionOptions);
+
+    fastify.decorate('db', {
+      memo: connection.getRepository(Memo),
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+```
+
+memo repository를 포함한 'db' decorator 를 생성합니다.
+
+#### 3. fastify 인스턴스에 'db' decorator 추가
+
+```javascript
+// src/index.ts
 import fastify from 'fastify';
 import { Server, IncomingMessage, ServerResponse } from 'http';
 
-import db from './decorators/db'; // 추가된 부분 ✨
+import db from './decorators/db'; // 추가된 부분 👈
 
 const PORT = process.env.PORT || '3000';
 const server: fastify.FastifyInstance<
@@ -175,148 +195,153 @@ server.get('/', async (request, reply) => {
   return { hello: 'world' };
 });
 
-server.register(db); // 추가된 부분 ✨
+server.register(db); // 추가된 부분 👈
 
 server.listen(+PORT, '0.0.0.0', (err) => {
   if (err) throw err;
 });
 ```
 
-4. 데이터베이스 연결하기  
-    TypeORM 에 PostgreSQL 을 연결하기 위한 설정을 해봅시다. 여러 방법으로 설정이 가능합니다. 저는 .env 를 통해 설정하는 방법을 사용하려고 합니다. 더 많은 방법은 https://github.com/typeorm/typeorm/blob/master/docs/using-ormconfig.md 링크를 참조해주세요.
+#### 4. 데이터베이스 연결하기
 
-   ```
-   // .env
-   TYPEORM_CONNECTION=postgres
-   TYPEORM_PORT=5432
-   TYPEORM_HOST=localhost
-   TYPEORM_USERNAME=admin
-   TYPEORM_PASSWORD=password123!
-   TYPEORM_DATABASE=test
-   TYPEORM_SYNCHRONIZE=true
-   TYPEORM_ENTITIES=src/modules/*/entity.ts
-   ```
+TypeORM 에 PostgreSQL 을 연결하기 위한 설정을 해봅시다. 여러 방법으로 설정이 가능합니다. 저는 .env 를 통해 설정하는 방법을 사용하려고 합니다. 더 많은 방법은 https://github.com/typeorm/typeorm/blob/master/docs/using-ormconfig.md 링크를 참조해주세요.
 
-   설정을 보면 알 수 있듯이 localhost 에 postgres 가 실행중이어야 합니다.
+```
+// .env
+TYPEORM_CONNECTION=postgres
+TYPEORM_PORT=5432
+TYPEORM_HOST=localhost
+TYPEORM_USERNAME=admin
+TYPEORM_PASSWORD=password123!
+TYPEORM_DATABASE=test
+TYPEORM_SYNCHRONIZE=true
+TYPEORM_ENTITIES=src/modules/*/entity.ts
+```
 
-   ```yaml
-   # docker-compose.yml
-   services:
-     postgres:
-       image: postgres
-       environment:
-         POSTGRES_USER: admin
-         POSTGRES_PASSWORD: password123!
-         POSTGRES_DB: test
-       ports:
-         - '5432:5432'
-       volumes:
-         - my_dbdata:/var/lib/postgres
-   volumes:
-     my_dbdata:
-   ```
+설정을 보면 알 수 있듯이 localhost 에 postgres 가 실행중이어야 합니다.
 
-   ```
-   docker-compose up
-   ```
+```yaml
+# docker-compose.yml
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123!
+      POSTGRES_DB: test
+    ports:
+      - '5432:5432'
+    volumes:
+      - my_dbdata:/var/lib/postgres
+volumes:
+  my_dbdata:
+```
 
-   저는 docker-compose 를 사용하여 데이터베이스를 실행했습니다. 로컬에서 직접 실행해도 상관없습니다.
+```
+docker-compose up
+```
 
-   `npm start` 를 통해 다시 서버를 실행합니다. localhost 에서 실행중인 PostgreSQL에 memo 라는 테이블이 생겼습니다. 성공적으로 작동하네요. 👏👏👏
-   ![memo table](/images/fastifyjs-typeORM-typescript-를-이용한-RESTful-API-만들기-1/2.png)
+저는 docker-compose 를 사용하여 데이터베이스를 실행했습니다. 로컬에서 직접 실행해도 상관없습니다.
 
-5) User 모델 생성하기  
-    위의 Memo 모델에는 Memo 를 소유한 사용자 정보가 없습니다. 사용자 모델을 추가해봅시다.
+`npm start` 를 통해 다시 서버를 실행합니다. localhost 에서 실행중인 PostgreSQL에 memo 라는 테이블이 생겼습니다. 성공적으로 작동하네요. 👏👏👏
+![memo table](/images/fastifyjs-typeORM-typescript-를-이용한-RESTful-API-만들기-1/2.png)
 
-   ```javascript
-   // modules/user/entity.ts
-   import {
-     CreateDateColumn,
-     Column,
-     Entity,
-     PrimaryGeneratedColumn,
-     UpdateDateColumn,
-   } from 'typeorm';
+#### 5. User 모델 생성하기
 
-   @Entity()
-   export class User {
-     @PrimaryGeneratedColumn()
-     id: number;
+위의 Memo 모델에는 Memo 를 소유한 사용자 정보가 없습니다. 사용자 모델을 추가해봅시다.
 
-     @Column({ type: 'varchar', nullable: false })
-     email: string;
+```javascript
+// modules/user/entity.ts
+import {
+  CreateDateColumn,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-     @Column({ type: 'varchar', nullable: false })
-     password: string;
+@Entity()
+export class User {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-     @CreateDateColumn()
-     created_at: string;
+  @Column({ type: 'varchar', nullable: false })
+  email: string;
 
-     @UpdateDateColumn()
-     updated_at: string;
-   }
-   ```
+  @Column({ type: 'varchar', nullable: false })
+  password: string;
 
-   db 데코레이터에 memo repository 를 추가했던 것과 같은 방법으로 user repository 도 추가합니다.
+  @CreateDateColumn()
+  created_at: string;
 
-   ```javascript
-   import fp from 'fastify-plugin';
-   import { createConnection, getConnectionOptions } from 'typeorm';
-   import { Memo } from '../modules/memo/entity';
-   import { User } from '../modules/user/entity'; // 추가된 부분 ✨
+  @UpdateDateColumn()
+  updated_at: string;
+}
+```
 
-   export default fp(async (fastify) => {
-     try {
-       const connectionOptions = await getConnectionOptions();
-       const connection = await createConnection(connectionOptions);
+db 데코레이터에 memo repository 를 추가했던 것과 같은 방법으로 user repository 도 추가합니다.
 
-       fastify.decorate('db', {
-         memo: connection.getRepository(Memo),
-         user: connection.getRepository(User), // 추가된 부분 ✨
-       });
-     } catch (error) {
-       console.log(error);
-     }
-   });
-   ```
+```javascript
+// src/decorators/db.ts
+import fp from 'fastify-plugin';
+import { createConnection, getConnectionOptions } from 'typeorm';
+import { Memo } from '../modules/memo/entity';
+import { User } from '../modules/user/entity'; // 추가된 부분 👈
 
-   그리고 Memo 모델에 (메모를 소유한) 사용자 정보를 추가합니다.
+export default fp(async (fastify) => {
+  try {
+    const connectionOptions = await getConnectionOptions();
+    const connection = await createConnection(connectionOptions);
 
-   ```javascript
-   // src/modules/memo/entity.ts
-   import {
-     CreateDateColumn,
-     Column,
-     Entity,
-     PrimaryGeneratedColumn,
-     UpdateDateColumn,
-     ManyToOne, // 추가된 부분 ✨
-     JoinColumn, // 추가된 부분 ✨
-   } from 'typeorm';
+    fastify.decorate('db', {
+      memo: connection.getRepository(Memo),
+      user: connection.getRepository(User), // 추가된 부분 👈
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+```
 
-   @Entity()
-   export class Memo {
-     @PrimaryGeneratedColumn()
-     id: number;
+그리고 Memo 모델에 (메모를 소유한) 사용자 정보를 추가합니다.
 
-     @Column({ type: 'varchar', length: 20, nullable: false })
-     title: string;
+```javascript
+// src/modules/memo/entity.ts
+import {
+  CreateDateColumn,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  ManyToOne, // 추가된 부분 👈
+  JoinColumn, // 추가된 부분 👈
+} from 'typeorm';
 
-     @Column({ type: 'varchar', length: 1000, nullable: false })
-     content: string;
+import { User } from '../user/entity'; // 추가된 부분 👈
 
-     @ManyToOne((type) => User) // 추가된 부분 ✨
-     @JoinColumn({ name: 'user_id' }) // 추가된 부분 ✨
-     user: User; // 추가된 부분 ✨
+@Entity()
+export class Memo {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-     @CreateDateColumn()
-     created_at: Date;
+  @Column({ type: 'varchar', length: 20, nullable: false })
+  title: string;
 
-     @UpdateDateColumn()
-     updated_at: Date;
-   }
-   ```
+  @Column({ type: 'varchar', length: 1000, nullable: false })
+  content: string;
 
-   다시 `npm start` 를 해보면 user table 이 성공적으로 생성되었고 memo table 에 user_id 가 추가되었습니다!!!!
-   ![memo table 2](/images/fastifyjs-typeORM-typescript-를-이용한-RESTful-API-만들기-1/3.png)
-   ![user table](/images/fastifyjs-typeORM-typescript-를-이용한-RESTful-API-만들기-1/4.png)
+  @ManyToOne((type) => User) // 추가된 부분 👈
+  @JoinColumn({ name: 'user_id' }) // 추가된 부분 👈
+  user: User; // 추가된 부분 👈
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+}
+```
+
+다시 `npm start` 를 해보면 user table 이 성공적으로 생성되었고 memo table 에 user_id 가 추가되었습니다!!!!
+![memo table 2](/images/fastifyjs-typeORM-typescript-를-이용한-RESTful-API-만들기-1/3.png)
+![user table](/images/fastifyjs-typeORM-typescript-를-이용한-RESTful-API-만들기-1/4.png)
