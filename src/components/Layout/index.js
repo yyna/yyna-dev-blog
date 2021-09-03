@@ -30,7 +30,7 @@ export default function Layout({ children }) {
             rel="noreferrer"
             className={styles.category}
           >
-            github <FontAwesomeIcon icon={faGithubAlt} />
+            github
           </a>
         </div>
       </section>
