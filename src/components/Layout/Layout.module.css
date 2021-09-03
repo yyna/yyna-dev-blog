@@ -11,12 +11,32 @@
 .header {
   font-family: 'Playfair Display', serif;
   font-weight: 900;
-  font-size: 80px;
   text-transform: uppercase;
-  line-height: 72px;
-  margin-bottom: 20px;
-  flex-grow: 2;
-  justify-self: center;
+}
+
+@media only all and (max-width: 1200px) {
+  .header {
+    font-size: 80px;
+    line-height: 72px;
+    margin-bottom: 20px;
+  }
+}
+
+@media only all and (max-width: 900px) {
+  .header {
+    font-size: 42px;
+    line-height: 36px;
+    margin-bottom: 10px;
+  }
+}
+
+@media only all and (max-width: 600px) {
+  .header {
+    display: none;
+    /* font-size: 21px;
+    line-height: 18px;
+    margin-bottom: 5px; */
+  }
 }
 
 .subhead {
