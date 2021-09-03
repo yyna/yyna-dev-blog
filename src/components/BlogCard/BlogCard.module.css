@@ -1,76 +1,82 @@
 .card {
-  margin-bottom: 3rem;
-  display: flex;
-  max-width: 100%;
+  font-size: 14px;
+  line-height: 20px;
+  width: 17.5%;
+  display: inline-block;
+  padding: 0 1% 0 1%;
+  vertical-align: top;
+  margin-bottom: 2rem;
+  transition: all 0.7s;
 }
 
-.card:hover {
-  opacity: 0.7;
+@media only all and (max-width: 1200px) {
+  .card {
+    width: 31%;
+  }
 }
 
-.content {
-  flex-grow: 1;
+@media only all and (max-width: 900px) {
+  .card {
+    width: 47%;
+  }
 }
 
-.categories {
-  margin-top: 1.2rem;
-}
-
-.category {
-  border: 1px solid #845ef7;
-  color: #845ef7;
-  border-radius: 0.5rem;
-  padding: 0.4rem;
-  font-size: 0.75rem;
-  margin-right: 0.5rem;
-}
-
-.title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin: 1rem 0;
-  color: black;
-}
-
-.description {
-  font-size: 1.4rem;
-  color: #555;
-  font-weight: lighter;
+@media only all and (max-width: 600px) {
+  .card {
+    width: 100%;
+  }
 }
 
 .image__wrapper {
   min-width: 270px;
+  width: 100%;
   height: 180px;
-  margin-right: 2rem;
+  margin-bottom: 1rem;
   background-position: center;
   background-size: cover;
+  filter: sepia(80%) grayscale(1) contrast(1) opacity(0.9);
+  mix-blend-mode: multiply;
+  width: 100%;
 }
 
-@media (max-width: 1200px) {
-  .image__wrapper {
-    display: none;
-  }
-}
-@media (min-width: 1200px) {
-  .image__wrapper {
-    display: block;
-  }
+.card:hover .image__wrapper {
+  filter: none;
 }
 
-@media (max-width: 768px) {
-  .card {
-    margin-bottom: 1.5rem;
-  }
-  .title {
-    font-size: 1.5rem;
-    line-height: 2.1rem;
-  }
-  .description {
-    font-size: 1.2rem;
-  }
-  .category {
-    border-radius: 0.4rem;
-    padding: 0.3rem;
-    margin-right: 0.3rem;
-  }
+.head {
+  text-align: center;
+  position: relative;
+}
+
+.headline {
+  text-align: center;
+  line-height: normal;
+  font-family: 'Nanum Myeongjo', serif;
+  display: block;
+  margin: 0 auto;
+  font-size: 1.8rem;
+  line-height: 2.4rem;
+}
+
+.date:before {
+  border-top: 1px solid #2f2f2f;
+  content: '';
+  width: 100px;
+  height: 7px;
+  display: block;
+  margin: 0 auto;
+}
+
+.date:after {
+  border-bottom: 1px solid #2f2f2f;
+  content: '';
+  width: 100px;
+  height: 10px;
+  display: block;
+  margin: 0 auto;
+}
+
+.description {
+  font-size: 1rem;
+  line-height: 1.5rem;
 }

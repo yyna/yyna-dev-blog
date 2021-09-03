@@ -22,7 +22,7 @@ export const query = graphql`
         image
         title
         date(formatString: "YYYY-MM-DD")
-        tags
+        category
         disqusIdentifier
       }
       fields {
@@ -35,7 +35,7 @@ export const query = graphql`
 export default function BlogPageLayout({ data }) {
   const {
     mdx: {
-      frontmatter: { image, title, date, tags, disqusIdentifier, description },
+      frontmatter: { image, title, date, disqusIdentifier, description },
       fields: { slug },
       body,
     },
@@ -69,21 +69,9 @@ export default function BlogPageLayout({ data }) {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@yyna_kwon" />
       </Helmet>
-      <div
-        className={styles.background}
-        style={{ backgroundImage: `url(${image})` }}
-      ></div>
       <div className={styles.container}>
-        <div className={styles.categories}>
-          {tags.map((tag) => (
-            <span className={styles.category} key={tag}>
-              # {tag}
-            </span>
-          ))}
-        </div>
         <h1 className={styles.title}>{title}</h1>
         <div className={styles.date}>{date}</div>
-
         <div className={styles.body}>
           <MDXRenderer>{body}</MDXRenderer>
         </div>

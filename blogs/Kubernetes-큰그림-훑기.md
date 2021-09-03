@@ -2,7 +2,7 @@
 title: Kubernetes 큰그림 훑기
 description: 컨테이너 오케스트레이션, 쿠버네티스를 구성하고 있는 것들에 대해서 알아보고 간단한 실습을 진행해봅니다.
 date: 2020-07-01
-tags: ['Container', 'Kubernetes']
+category: tech
 published: true
 image: /images/Kubernetes-큰그림-훑기/_thumbnail.png
 disqusIdentifier: kubernetes-concepts

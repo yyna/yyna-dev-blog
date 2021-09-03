@@ -2,7 +2,7 @@
 title: github 페이지로 모바일 청첩장 만들기
 description: 결혼식의 주인공은 신부라고들 하지만 이 모바일 청첩장에서 만큼은 아빠의 계좌 번호가 주인공이 아닐까 싶습니다.
 date: 2020-10-30
-tags: ['Toy Project']
+category: etc
 published: true
 image: /images/github-페이지로-모바일-청첩장-만들기/_thumbnail.png
 disqusIdentifier: mobile-wedding-invitation

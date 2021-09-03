@@ -7,37 +7,34 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export default function Layout({ children }) {
   return (
     <>
-      <section className={styles.header}>
-        <div className="container">
-          <div className={styles.navigator}>
-            <Link className={styles.logo} to="/">
-              <span className={styles.logo__blog}>{'{ yyna.dev }'}</span>
-            </Link>
-            <div>
-              <a
-                className={styles.button}
-                href="https://github.com/yyna"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <FontAwesomeIcon icon={faGithubAlt} />
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-      {children}
-      <section className={styles.footer}>
-        <div className="container">
-          @ 2021 - Web app coded by{' '}
-          <a href="https://yyna.dev">
-            Jungin Kwon{' '}
-            <span role="img" aria-label="woman-raising-hand">
-              🙋🏻‍♀️
-            </span>
+      <section className={styles.head}>
+        <Link to="/">
+          <header className={styles.header}>{'YYNA DEV'}</header>
+        </Link>
+        <div className={styles.subhead}>
+          <Link to="/?category=tech" className={styles.category}>
+            tech
+          </Link>
+          |
+          <Link to="/?category=book_review" className={styles.category}>
+            book review
+          </Link>
+          |
+          <Link to="/?category=etc" className={styles.category}>
+            etc
+          </Link>
+          |
+          <a
+            href="https://github.com/yyna"
+            target="_blank"
+            rel="noreferrer"
+            className={styles.category}
+          >
+            github <FontAwesomeIcon icon={faGithubAlt} />
           </a>
         </div>
       </section>
+      {children}
     </>
   );
 }

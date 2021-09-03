@@ -2,7 +2,6 @@ import React from 'react';
 import Layout from 'src/components/Layout';
 import BlogCard from 'src/components/BlogCard';
 import { Helmet } from 'react-helmet';
-
 import { graphql } from 'gatsby';
 
 export const query = graphql`
@@ -22,7 +21,8 @@ export const query = graphql`
           title
           description
           image
-          tags
+          date(formatString: "YYYY-MM-DD")
+          category
         }
         fields {
           slug
@@ -32,13 +32,14 @@ export const query = graphql`
   }
 `;
 
-const Home = ({ data }) => {
-  // const blogs = data?.allMdx?.nodes;
-
+const Home = ({ data, location }) => {
   const {
     allMdx: { nodes: blogs },
     site: { siteMetadata },
   } = data;
+
+  const params = new URLSearchParams(location.search);
+  const c = params.get('category');
 
   return (
     <Layout>
@@ -61,22 +62,27 @@ const Home = ({ data }) => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@yyna_kwon" />
       </Helmet>
-      <div className="container">
-        {blogs.map(
-          ({
-            frontmatter: { title, description, image, tags = [] },
-            fields: { slug },
-          }) => (
-            <BlogCard
-              key={title}
-              title={title}
-              description={description}
-              image={image}
-              slug={slug}
-              tags={tags}
-            />
-          )
-        )}
+      <div className="blogcards">
+        {blogs
+          .filter(({ frontmatter: { category } }) => {
+            return c == undefined ? true : category == c;
+          })
+          .map(
+            ({
+              frontmatter: { title, description, date, image, category },
+              fields: { slug },
+            }) => (
+              <BlogCard
+                key={title}
+                title={title}
+                description={description}
+                image={image}
+                date={date}
+                slug={slug}
+                category={category}
+              />
+            )
+          )}
       </div>
     </Layout>
   );

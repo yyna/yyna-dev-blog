@@ -1,49 +1,32 @@
-.header {
-  background-color: #845ef7;
-  display: flex;
-  justify-content: center;
-}
-
-.navigator {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  color: white;
-  font-weight: lighter;
-  font-size: 1.8rem;
-}
-
-.logo__blog {
-  margin-left: 1rem;
-  color: #eff7ff;
-}
-
-.button {
-  outline: none;
-  border: none;
-  margin: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  font-size: 1rem;
-  color: #845ef7;
-  font-weight: bold;
-  border-radius: 0.25rem;
-  display: inline-block;
-  background-color: white;
-}
-
-.button:hover {
-  opacity: 0.7;
-  cursor: pointer;
-}
-
-.footer {
-  background-color: #f2f2f2;
-  font-size: 1rem;
-  color: #555;
+.head {
   text-align: center;
+  position: -webkit-sticky; /* 사파리 브라우저 지원 */
+  position: sticky;
+  top: 0;
+  background-color: #f9f7f1;
+  padding: 10px 10px 0 10px;
+  z-index: 1;
+}
+
+.header {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 80px;
+  text-transform: uppercase;
+  line-height: 72px;
+  margin-bottom: 20px;
+  flex-grow: 2;
+  justify-self: center;
+}
+
+.subhead {
+  text-transform: uppercase;
+  border-bottom: 2px solid #2f2f2f;
+  border-top: 2px solid #2f2f2f;
+  padding: 9px 0;
+}
+
+a.category {
+  margin: 0 10px;
+  font-style: italic;
 }

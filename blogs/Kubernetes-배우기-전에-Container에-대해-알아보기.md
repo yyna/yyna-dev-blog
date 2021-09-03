@@ -2,7 +2,7 @@
 title: Kubernetes 배우기 전에 Container에 대해 알아보기
 description: 컨테이너는 무엇이며 왜 필요할까요?
 date: 2020-06-02
-tags: ['Container', 'Kubernetes']
+category: tech
 published: true
 image: /images/Kubernetes-배우기-전에-Container에-대해-알아보기/_thumbnail.png
 disqusIdentifier: learn-about-containers-before-studying-kubernetes
