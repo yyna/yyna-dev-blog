@@ -1,8 +1,6 @@
 import React from 'react';
 import * as styles from './Layout.module.css';
 import { Link } from 'gatsby';
-import { faGithubAlt } from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function Layout({ children }) {
   return (
