@@ -36,11 +36,30 @@
   background-size: cover;
   filter: sepia(80%) grayscale(1) contrast(1) opacity(0.9);
   mix-blend-mode: multiply;
-  width: 100%;
 }
 
 .card:hover .image__wrapper {
   filter: none;
+}
+
+.fake__thumbnail {
+  min-width: 270px;
+  width: calc(100% - 30px);
+  height: 150px;
+  margin-bottom: 1rem;
+  color: white;
+  font-size: 2.1rem;
+  line-height: 2.4rem;
+  font-weight: lighter;
+  background-color: rgb(228, 226, 218);
+  white-space: pre-line;
+  overflow: hidden;
+  padding: 15px;
+}
+
+.card:hover .fake__thumbnail {
+  color: #16cdcb;
+  font-weight: normal;
 }
 
 .head {
