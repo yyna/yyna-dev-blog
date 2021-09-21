@@ -10,7 +10,6 @@ export default function BlogCard({
   date,
   category,
 }) {
-  console.log(image);
   return (
     <Link to={slug} className={styles.card}>
       {image ? (
