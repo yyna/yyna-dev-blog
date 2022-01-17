@@ -20,7 +20,6 @@ export const query = graphql`
         frontmatter {
           title
           description
-          image
           date(formatString: "YYYY-MM-DD")
           category
         }
@@ -69,14 +68,13 @@ const Home = ({ data, location }) => {
           })
           .map(
             ({
-              frontmatter: { title, description, date, image, category },
+              frontmatter: { title, description, date, category },
               fields: { slug },
             }) => (
               <BlogCard
                 key={title}
                 title={title}
                 description={description}
-                image={image}
                 date={date}
                 slug={slug}
                 category={category}

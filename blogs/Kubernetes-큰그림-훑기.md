@@ -4,7 +4,6 @@ description: 컨테이너 오케스트레이션, 쿠버네티스를 구성하고
 date: 2020-07-01
 category: tech
 published: true
-image: /images/Kubernetes-큰그림-훑기/_thumbnail.png
 disqusIdentifier: kubernetes-concepts
 ---
 

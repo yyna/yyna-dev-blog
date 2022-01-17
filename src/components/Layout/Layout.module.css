@@ -3,7 +3,7 @@
   position: -webkit-sticky; /* 사파리 브라우저 지원 */
   position: sticky;
   top: 0;
-  background-color: #f9f7f1;
+  background-color: white;
   padding: 10px 10px 0 10px;
   z-index: 1;
 }
@@ -14,15 +14,7 @@
   text-transform: uppercase;
 }
 
-@media only all and (max-width: 1200px) {
-  .header {
-    font-size: 80px;
-    line-height: 72px;
-    margin-bottom: 20px;
-  }
-}
-
-@media only all and (max-width: 900px) {
+@media only all and (min-width: 600px) {
   .header {
     font-size: 42px;
     line-height: 36px;

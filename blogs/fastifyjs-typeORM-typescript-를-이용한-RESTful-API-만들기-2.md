@@ -4,7 +4,6 @@ description: Route 생성를 생성하고 Middleware, Handler 작성해봅시다
 date: 2020-05-07
 category: tech
 published: true
-image: /images/fastifyjs-typeORM-typescript-를-이용한-RESTful-API-만들기-2/_thumbnail.png
 disqusIdentifier: building-rest-api-using-fastify-typescript-typeorm-2
 ---
 
@@ -66,11 +65,8 @@ import db from './decorators/db';
 import memo from './modules/memo/router'; // 추가된 부분 👈
 
 const PORT = process.env.PORT || '3000';
-const server: fastify.FastifyInstance<
-  Server,
-  IncomingMessage,
-  ServerResponse
-> = fastify({ logger: true });
+const server: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> =
+  fastify({ logger: true });
 
 server.register(db);
 server.register(memo); // 추가된 부분 👈
@@ -156,11 +152,8 @@ import memo from './modules/memo/router';
 import user from './modules/user/router'; // 추가된 부분 👈
 
 const PORT = process.env.PORT || '3000';
-const server: fastify.FastifyInstance<
-  Server,
-  IncomingMessage,
-  ServerResponse
-> = fastify({ logger: true });
+const server: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> =
+  fastify({ logger: true });
 
 server.register(db);
 server.register(memo);
@@ -235,11 +228,8 @@ import memo from './modules/memo/router';
 import user from './modules/user/router';
 
 const PORT = process.env.PORT || '3000';
-const server: fastify.FastifyInstance<
-  Server,
-  IncomingMessage,
-  ServerResponse
-> = fastify({ logger: true });
+const server: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> =
+  fastify({ logger: true });
 
 server.register(db);
 server.register(auth); // 추가된 부분 👈

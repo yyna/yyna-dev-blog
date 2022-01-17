@@ -4,7 +4,6 @@ description: 프로젝트를 생성하고 모델을 작성해봅시다.
 date: 2020-05-07
 category: tech
 published: true
-image: /images/fastifyjs-typeORM-typescript-를-이용한-RESTful-API-만들기-1/_thumbnail.png
 disqusIdentifier: building-rest-api-using-fastify-typescript-typeorm-1
 ---
 
@@ -95,11 +94,8 @@ import fastify, {
 import { Server, IncomingMessage, ServerResponse } from 'http';
 
 const PORT = process.env.PORT || '3000';
-const server: FastifyInstance<
-  Server,
-  IncomingMessage,
-  ServerResponse
-> = fastify({ logger: true });
+const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
+  fastify({ logger: true });
 
 // test code
 server.get('/', async (request: FastifyRequest, reply: FastifyReply) => {
@@ -184,11 +180,8 @@ import { Server, IncomingMessage, ServerResponse } from 'http';
 import db from './decorators/db'; // 추가된 부분 👈
 
 const PORT = process.env.PORT || '3000';
-const server: fastify.FastifyInstance<
-  Server,
-  IncomingMessage,
-  ServerResponse
-> = fastify({ logger: true });
+const server: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> =
+  fastify({ logger: true });
 
 // test code
 server.get('/', async (request, reply) => {

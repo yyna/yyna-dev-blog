@@ -1,101 +1,35 @@
 .card {
   font-size: 14px;
   line-height: 20px;
-  width: 17.5%;
-  display: inline-block;
-  padding: 0 1% 0 1%;
-  vertical-align: top;
-  margin-bottom: 2rem;
-  transition: all 0.7s;
-}
-
-@media only all and (max-width: 1200px) {
-  .card {
-    width: 31%;
-  }
-}
-
-@media only all and (max-width: 900px) {
-  .card {
-    width: 47%;
-  }
-}
-
-@media only all and (max-width: 600px) {
-  .card {
-    width: 100%;
-  }
-}
-
-.image__wrapper {
-  min-width: 270px;
-  width: 100%;
-  height: 180px;
-  margin-bottom: 1rem;
-  background-position: center;
-  background-size: cover;
-  filter: sepia(80%) grayscale(1) contrast(1) opacity(0.9);
-  mix-blend-mode: multiply;
-}
-
-.card:hover .image__wrapper {
-  filter: none;
-}
-
-.fake__thumbnail {
-  min-width: 270px;
   width: calc(100% - 30px);
-  height: 150px;
+  display: block;
   margin-bottom: 1rem;
-  color: white;
-  font-size: 2.1rem;
-  line-height: 2.4rem;
-  font-weight: lighter;
-  background-color: rgb(228, 226, 218);
-  white-space: pre-line;
-  overflow: hidden;
-  padding: 15px;
-}
-
-.card:hover .fake__thumbnail {
-  color: #16cdcb;
-  font-weight: normal;
-}
-
-.head {
-  text-align: center;
-  position: relative;
+  transition: all 0.7s;
+  border: 1px solid black;
+  max-width: 720px;
+  padding: 1rem;
+  margin: 1rem auto;
 }
 
 .headline {
-  text-align: center;
-  line-height: normal;
-  font-family: 'Nanum Myeongjo', serif;
+  text-align: left;
   display: block;
-  margin: 0 auto;
-  font-size: 1.8rem;
-  line-height: 2.4rem;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
 }
 
-.date:before {
-  border-top: 1px solid #2f2f2f;
-  content: '';
-  width: 100px;
-  height: 7px;
-  display: block;
-  margin: 0 auto;
-}
-
-.date:after {
-  border-bottom: 1px solid #2f2f2f;
-  content: '';
-  width: 100px;
-  height: 10px;
-  display: block;
-  margin: 0 auto;
+.date {
+  text-align: right;
+  height: 0.75rem;
+  font-size: 0.75rem;
+  color: #777;
+  font-style: italic;
 }
 
 .description {
   font-size: 1rem;
   line-height: 1.5rem;
+  text-align: left;
 }

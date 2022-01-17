@@ -19,7 +19,6 @@ export const query = graphql`
     mdx(id: { eq: $id }) {
       body
       frontmatter {
-        image
         title
         date(formatString: "YYYY-MM-DD")
         category
@@ -35,7 +34,7 @@ export const query = graphql`
 export default function BlogPageLayout({ data }) {
   const {
     mdx: {
-      frontmatter: { image, title, date, disqusIdentifier, description },
+      frontmatter: { title, date, disqusIdentifier, description },
       fields: { slug },
       body,
     },
@@ -54,7 +53,7 @@ export default function BlogPageLayout({ data }) {
           content={`${title} | ${siteMetadata.title}`}
         />
         <meta property="og:url" content={`https://yyna.dev${slug}`} />
-        <meta property="og:image" content={`https://yyna.dev${image}`} />
+        <meta property="og:image" content={`https://yyna.dev/_thumbnail.png`} />
         <meta property="og:image:width" content="900" />
         <meta property="og:image:height" content="481" />
         <meta property="og:description" content={description} />
@@ -65,7 +64,10 @@ export default function BlogPageLayout({ data }) {
           content={`${title} | ${siteMetadata.title}`}
         />
         <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={`https://yyna.dev${image}`} />
+        <meta
+          name="twitter:image"
+          content={`https://yyna.dev/_thumbnail.png`}
+        />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@yyna_kwon" />
       </Helmet>

@@ -4,7 +4,6 @@ description: 결혼식의 주인공은 신부라고들 하지만 이 모바일 �
 date: 2020-10-30
 category: etc
 published: true
-image: /images/github-페이지로-모바일-청첩장-만들기/_thumbnail.png
 disqusIdentifier: mobile-wedding-invitation
 ---
 
