@@ -34,6 +34,6 @@
 }
 
 a.category {
-  margin: 0 10px;
-  font-style: italic;
+  margin: 3px 9px;
+  display: inline-block;
 }
