@@ -23,6 +23,7 @@ export const query = graphql`
         date(formatString: "YYYY-MM-DD")
         category
         disqusIdentifier
+        link
       }
       fields {
         slug

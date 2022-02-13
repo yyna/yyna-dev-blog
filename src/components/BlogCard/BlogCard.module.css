@@ -11,6 +11,11 @@
   margin: 1rem auto;
 }
 
+.link {
+  text-align: left;
+  color: gray;
+}
+
 .headline {
   text-align: left;
   display: block;
