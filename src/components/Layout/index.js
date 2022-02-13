@@ -6,10 +6,11 @@ export default function Layout({ children }) {
   return (
     <>
       <section className={styles.head}>
-        <Link to="/">
-          <header className={styles.header}>{'YYNA DEV'}</header>
-        </Link>
         <div className={styles.subhead}>
+          <Link to="/" className={`${styles.category} ${styles.home}`}>
+            yyna.dev
+          </Link>
+          |
           <Link to="/?category=tech" className={styles.category}>
             tech
           </Link>

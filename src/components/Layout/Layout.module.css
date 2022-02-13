@@ -8,18 +8,16 @@
   z-index: 1;
 }
 
-.header {
-  font-family: 'Playfair Display', serif;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
 @media only all and (min-width: 600px) {
   .header {
     font-size: 42px;
     line-height: 36px;
     margin-bottom: 10px;
   }
+}
+
+.home {
+  font-weight: bold;
 }
 
 @media only all and (max-width: 600px) {

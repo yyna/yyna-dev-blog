@@ -13,7 +13,8 @@
 
 .link {
   text-align: left;
-  color: gray;
+  color: #777;
+  text-decoration: underline;
 }
 
 .headline {
