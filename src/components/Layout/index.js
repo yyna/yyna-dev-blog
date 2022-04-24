@@ -15,7 +15,7 @@ export default function Layout({ children }) {
             tech
           </Link>
           |
-          <Link to="/?category=book_review" className={styles.category}>
+          <Link to="/?category=book-review" className={styles.category}>
             book review
           </Link>
           |
