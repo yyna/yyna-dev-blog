@@ -1,11 +1,11 @@
 module.exports = {
   siteMetadata: {
-    title: '{ yyna.dev }',
+    title: '( yyna.dev )',
     siteUrl: 'https://yyna.dev/',
-    description: '#Developer, #JavaScript, #Seoul',
+    description: '#Developer, #Clojure, #Seoul',
     home: {
       title: '권정인, Jungin Kwon',
-      description: '#Developer, #JavaScript, #Seoul',
+      description: '#Developer, #Clojure, #Seoul',
     },
   },
   plugins: [

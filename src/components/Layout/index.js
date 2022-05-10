@@ -1,6 +1,8 @@
 import React from 'react';
 import * as styles from './Layout.module.css';
 import { Link } from 'gatsby';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGithubAlt, faYoutube } from '@fortawesome/free-brands-svg-icons';
 
 export default function Layout({ children }) {
   return (
@@ -29,7 +31,16 @@ export default function Layout({ children }) {
             rel="noreferrer"
             className={styles.category}
           >
-            github
+            <FontAwesomeIcon icon={faGithubAlt} />
+          </a>
+          |
+          <a
+            href="https://www.youtube.com/channel/UCem7OmBp_gO16Qexz5FRh5w"
+            target="_blank"
+            rel="noreferrer"
+            className={styles.category}
+          >
+            <FontAwesomeIcon icon={faYoutube} />
           </a>
         </div>
       </section>
