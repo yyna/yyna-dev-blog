@@ -2,11 +2,7 @@ import React from 'react';
 import * as styles from './Layout.module.css';
 import { Link } from 'gatsby';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faGithubAlt,
-  faYoutube,
-  faTwitter,
-} from '@fortawesome/free-brands-svg-icons';
+import { faGithubAlt, faYoutube } from '@fortawesome/free-brands-svg-icons';
 
 export default function Layout({ children }) {
   return (
@@ -28,15 +24,6 @@ export default function Layout({ children }) {
           <Link to="/?category=etc" className={styles.category}>
             etc
           </Link>
-          |
-          <a
-            href="https://twitter.com/yyna_x"
-            target="_blank"
-            rel="noreferrer"
-            className={styles.category}
-          >
-            <FontAwesomeIcon icon={faTwitter} />
-          </a>
           |
           <a
             href="https://github.com/yyna"
