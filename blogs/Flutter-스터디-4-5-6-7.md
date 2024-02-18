@@ -374,4 +374,462 @@ Hot Reload 성공! 😆
 
 ## 6장. 기본 위젯 알아보기
 
+### 위젯 소개
+
+- 자식을 하나만 갖는 대표적인 위젯 (`child` 매개변수를 받음)
+  - Container 위젯: 컨테이너 역할, 배경색, 너비와 높이, 테두리 등의 디자인을 지정할 수 있다.
+  - GestureDetector 위젯: 탭, 드래그, 더블 클릭 같은 제스처 기능이 자식 위젯에 인식 됐을 때 함수를 실행할 수 있다.
+  - SizedBox 위젯: 높이와 너비를 지정하는 위젯, Container 위젯과 다르게 디자인적 요소는 적용할 수 없다. (퍼포먼스 측면에서 더 효율적)
+- 다수의 자식을 입력할 수 있는 위젯 (`children` 매개변수를 받음)
+  - Column 위젯: 모든 자식 위젯들을 세로로 배치
+  - Row 위젯: 모든 자식 위젯들을 가로로 배치
+  - ListView 위젯: 리스트 구현에 사용. 입력된 위젯이 화면을 벗어나면 스크롤이 가능해진다.
+
+#### Children과 Child의 차이점
+
+child와 children 매개변수를 동시에 입력받는 위젯은 존재하지 않는다.
+
+(👩🏻‍💻 책 예제는 여전히 Hot Reload가 안되기 때문에 안드로이드 스튜디오의 Hot Restart를 사용해서 실습을 진행했다.)
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Text(
+            'Code Factory', // 하나의 위젯만 가운데 정렬 가능
+          ),
+        ),
+      ),
+    ),
+  );
+}
+```
+
+![Text 위젯 하나를 가운데 정렬](/images/Flutter-스터디-4-5-6-7/6.png)
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: SizedBox(
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [ // 여러 위젯을 Column 위젯에 입력 가능
+              Text('Code'),
+              Text('Factory'),
+            ],
+          )
+        ),
+      ),
+    ),
+  );
+}
+```
+
+![Text 위젯 두개를 입력 가능](/images/Flutter-스터디-4-5-6-7/7.png)
+
+### 텍스트 관련 위젯
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Text(
+            '코드팩토리', // 작성하고 싶은 글
+            style: TextStyle( // 글자에 스타일 적용
+              fontSize: 16.0, // 글자 크기
+              fontWeight: FontWeight.w700, // 글자 굵기
+              color: Colors.blue, // 글자 색상
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![Text 위젯에 스타일 적용](/images/Flutter-스터디-4-5-6-7/8.png)
+
+### 제스처 관련 위젯
+
+사용자가 키보드로 글자를 입력하는 행위 외의 모든 입력을 제스처라고 부른다. 제스처 관련 위젯은 특정 제스처가 입력됐을 때 인지하고 **콜백 함수를 실행**한다.
+
+#### Button 위젯
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: TextButton(
+            onPressed: () {}, // 클릭시 실행
+            style: TextButton.styleFrom( // 스타일 지정
+              foregroundColor: Colors.red, // 주색상 지정
+            ),
+            child: Text('텍스트 버튼'), // 버튼에 넣을 위젯
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![TextButton 위젯](/images/Flutter-스터디-4-5-6-7/9.gif)
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: OutlinedButton(
+            onPressed: () {}, // 클릭시 실행
+            style: OutlinedButton.styleFrom( // 버튼 스타일
+              foregroundColor: Colors.red,
+            ),
+            child: Text('아웃라인드 버튼'), // 버튼에 넣을 위젯
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![OutlinedButton 위젯](/images/Flutter-스터디-4-5-6-7/10.gif)
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: ElevatedButton(
+            onPressed: () {}, // 클릭시 실행
+            style: ElevatedButton.styleFrom( // 버튼 스타일
+              backgroundColor: Colors.red,
+            ),
+            child: Text('엘리베이티드 버튼'), // 버튼에 넣을 위젯
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![ElevatedButton 위젯](/images/Flutter-스터디-4-5-6-7/11.gif)
+
+#### IconButton 위젯
+
+Icons 클래스를 통해 기본 제공 아이콘들을 사용할 수 있다. 제공되는 아이콘 목록은 [https://fonts.google.com/icons](https://fonts.google.com/icons)에서 확인할 수 있다.
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: IconButton(
+            onPressed: () {}, // 클릭시 실행
+            icon: Icon(
+              Icons.home,
+            )
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![IconButton 위젯](/images/Flutter-스터디-4-5-6-7/12.gif)
+
+#### GestureDetector 위젯
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: GestureDetector(
+            onTap: () { // 한 번 탭했을 때 실행할 함수
+              print('on tap');
+            },
+            onDoubleTap: () { // 두 번 탭했을 때 실행할 함수
+              print('on double tap');
+            },
+            onLongPress: () {
+              print('on long press');
+            },
+            child: Container( // 제스처를 적용할 위젯
+              decoration: BoxDecoration(
+                color: Colors.red,
+              ),
+              width: 100.0,
+              height: 100.0,
+            ),
+          )
+        ),
+      ),
+    );
+  }
+}
+```
+
+![GestureDetector 위젯](/images/Flutter-스터디-4-5-6-7/13.png)
+
+빨간 박스를 탭, 더블탭, 롱프레스 했을때 콘솔에서 아래와 같은 로그를 확인할 수 있다.
+
+```
+I/flutter ( 5420): on tap
+I/flutter ( 5420): on double tap
+I/flutter ( 5420): on long press
+```
+
+이 외에 `onPanStart`, `onPanUpdate`, `onPanEnd`, `onHorizontalDragStart`, `onHorizontalDragUpdate`, `onHorizontalDragEnd`, `onVerticalDragStart`, `onVerticalDragUpdate`, `onVerticalDragEnd`, `onScaleStart`, `onScaleUpdate`, `onScaleEnd` 등이 있다. [https://api.flutter.dev/flutter/widgets/GestureDetector-class.html](https://api.flutter.dev/flutter/widgets/GestureDetector-class.html)에서 모두 확인 가능하다.
+
+#### FloatingActionButton 위젯
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(FloatingActionButtonExample());
+}
+
+class FloatingActionButtonExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {}, // 클릭했을 때 실행할 함수
+          child: Text('클릭'),
+        ),
+        body: Container(),
+      ),
+    );
+  }
+}
+```
+
+![FloatingActionButton 위젯](/images/Flutter-스터디-4-5-6-7/14.gif)
+
+### 디자인 관련 위젯
+
+#### Container 위젯
+
+다른 위젯을 담는 용도, 위젯의 너비와 높이를 지정하거나 배경이나 테두리를 추가할때 많이 사용한다.
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.red, // 배경색 적용
+              border: Border.all(
+                // 테두리 적용
+                width: 16.0, // 테두리 굵기
+                color: Colors.black, // 테두리 색상
+              ),
+              borderRadius: BorderRadius.circular(
+                16.0,
+              ),
+            ),
+            height: 200.0, // 높이
+            width: 100.0, // 너비
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![Container 위젯](/images/Flutter-스터디-4-5-6-7/15.png)
+
+#### SizedBox 위젯
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: SizedBox(
+            height: 200.0, // 높이 지정
+            width: 200.0, // 너비 지정
+            child: Container(
+              // 크기 확인 용도로 Container 추가
+              color: Colors.red,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![SizedBox 위젯](/images/Flutter-스터디-4-5-6-7/16.png)
+
+#### Padding 위젯
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Container(
+            color: Colors.blue,
+            child: Padding(
+              padding: EdgeInsets.all(
+                // 상하, 좌우로 모두 16픽셀만큼 패딩 적용
+                16.0,
+              ),
+              child: Container(
+                color: Colors.red,
+                width: 50.0,
+                height: 50.0,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![Padding 위젯](/images/Flutter-스터디-4-5-6-7/17.png)
+
+패딩은 적용된 위젯이 차지하는 크기 **내부에서** 간격이 추가된다. 위젯의 **바깥에** 간격을 추가해주는 마진<sup>margin</sup>이라는 기능도 있다. <u>따로 마진 위젯이 존재하지는 않고 Container 위젯에 추가할 수 있다.</u>
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          // 최상위 검정 컨테이너 (margin이 적용되는 대상)
+          child: Container(
+            color: Colors.black,
+            child: Container(
+                // 중간 파란 컨테이너
+                color: Colors.blue,
+                margin: EdgeInsets.all(16.0), // 마진 적용 위치
+                child: Padding(
+                  // 패딩 적용
+                  padding: EdgeInsets.all(16.0),
+                  // 패딩이 적용된 빨간 컨테이너
+                  child: Container(
+                    color: Colors.red,
+                    width: 50,
+                    height: 50,
+                  ),
+                )),
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![마진](/images/Flutter-스터디-4-5-6-7/18.png)
+
+👩🏻‍💻 바로 위 예제와 비교해보면 쉽게 마진의 역할을 이해할 수 있다. 검정색 컨테이너가 마진이 적용된 대상이다.
+
+![마진이 있다가 없다가](/images/Flutter-스터디-4-5-6-7/19.gif)
+
 ## 7장. 앱을 만들려면 알아야하는 그 밖의 지식
