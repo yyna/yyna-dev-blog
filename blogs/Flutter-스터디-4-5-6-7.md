@@ -256,6 +256,122 @@ String getVehicleSound(Vehicle vehicle) {
 
 ## 5장. 플러터 입문하기
 
+### 플러터 소개
+
+#### 플러터 구조 살펴보기
+
+- 임베더 계층: 하드웨어와 가장 가까운 로우 레벨, 각 플랫폼의 네이티브 언어로 작성되어 있다.
+- 엔진 계층: 대부분 C++로 작성, 플러터 코어 API와 스키아 그래픽 엔진, 파일시스템, 네트워크 기능 등이 정의되어 있다.
+- **프레임워크 계층**: 위젯, 애니메이션, 머티리얼 패키지, 쿠퍼티노 패키지 등이 있다.
+
+플러터가 스키아 엔진과 직접 통신한다 👉 어떤 플랫폼이든 스키아 엔진을 지원한다면 플러터가 컴파일되고 실행되도록 구현할 수 있다
+
+플러터는 위젯을 스키아 엔진에 직접 그려내고 필요한 제스처 및 이벤트 브릿지를 통하지 않고 실행 👉 리액트 네이티브에 비해 상당히 빠른 퍼포먼스
+
+### Hello Flutter 앱 만들기
+
+안드로이드 스튜디오에서 [New Flutter Project]를 통해 프로젝트를 생성하면 다음과 같은 파일들이 생성된다.
+
+![새 프로젝트 구조](/images/Flutter-스터디-4-5-6-7/1.png)
+
+`lib/main.dart` 파일을 수정하여 'Hello Code Factory'를 출력해보자.
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    MaterialApp(
+      home: Scaffold(
+        body: Text(
+          'Hello Code Factory',
+        ),
+      ),
+    ),
+  );
+}
+```
+
+- `MaterialApp`: 머티리얼 디자인 기반의 위젯들을 사용하게 해주는 위젯
+- `Scaffold`: 화면 전체를 차지하며 레이아웃을 도와주고 UI 관련 특수 기능을 제공한다. ex) 스낵바, 앱바, 탭바
+
+시뮬레이터에서 위 코드를 실행해보자.
+
+- iOS
+  ![Hello Code Factory (iOS)](/images/Flutter-스터디-4-5-6-7/2.png)
+- 안드로이드
+  ![Hello Code Factory (Android)](/images/Flutter-스터디-4-5-6-7/3.png)
+
+#### Center 위젯으로 중앙 정렬
+
+```
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    MaterialApp(
+      home: Scaffold(
+        body: Center( // 👈 Center 위젯 추가
+          child: Text(
+            'Hello Code Factory',
+          ),
+        ),
+      ),
+    ),
+  );
+}
+```
+
+![Center 위젯](/images/Flutter-스터디-4-5-6-7/4.png)
+
+#### 👩🏻‍💻 Hot Reload가 왜 안되지?
+
+Text를 변경 후 저장하면, 아래와 같은 로그를 볼 수 있지만 시뮬레이터 속 내용은 변하지 않는다.
+
+```
+Performing hot reload...
+Syncing files to device sdk gphone64 x86 64...
+Reloaded 1 of 696 libraries in 774ms (compile: 29 ms, reload: 392 ms, reassemble: 305 ms).
+D/EGL_emulation( 4457): app_time_stats: avg=6604.28ms min=6604.28ms max=6604.28ms count=1
+```
+
+Flutter 문서 [How to perform a hot reload](https://docs.flutter.dev/tools/hot-reload#how-to-perform-a-hot-reload)에서 다음과 같은 내용을 확인할 수 있다.
+
+```
+A code change has a visible effect only if the modified Dart code is run again after the change. Specifically, a hot reload causes all the existing widgets to rebuild. Only code involved in the rebuilding of the widgets is automatically re-executed. The main() and initState() functions, for example, are not run again.
+```
+
+핫 리로드는 위젯의 build()를 확인하여 변경 사항을 적용한다는 것이다.
+
+StatelessWidget를 상속해서 build() 메소드를 재정의해보았다.
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Text(
+            'Hello Code Factory',
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![StatelessWidget으로 Hot Reload 해보기](/images/Flutter-스터디-4-5-6-7/5.gif)
+
+Hot Reload 성공! 😆
+
 ## 6장. 기본 위젯 알아보기
 
 ## 7장. 앱을 만들려면 알아야하는 그 밖의 지식
