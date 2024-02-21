@@ -1130,6 +1130,6 @@ class ColumnWidgetExample extends StatelessWidget {
 }
 ```
 
-![Expanded 위젯](/images/Flutter-스터디-4-5-6-7/27.png)
+![Stack 위젯](/images/Flutter-스터디-4-5-6-7/27.png)
 
 ## 7장. 앱을 만들려면 알아야하는 그 밖의 지식
