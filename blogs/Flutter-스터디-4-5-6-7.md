@@ -828,8 +828,308 @@ class MyApp extends StatelessWidget {
 
 ![마진](/images/Flutter-스터디-4-5-6-7/18.png)
 
-👩🏻‍💻 바로 위 예제와 비교해보면 쉽게 마진의 역할을 이해할 수 있다. 검정색 컨테이너가 마진이 적용된 대상이다.
+👩🏻‍💻 바로 위 예제와 비교해보면 쉽게 마진의 역할을 이해할 수 있다. 검정색 컨테이너가 마진이 적용된 부분이다.
 
 ![마진이 있다가 없다가](/images/Flutter-스터디-4-5-6-7/19.gif)
+
+#### SafeArea
+
+SafeArea 위젯을 사용하면 따로 기기별로 예외 처리를 하지 않고도 안전한(Safe) 화면에서만 위젯을 그릴 수 있다.
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: SafeArea(
+          top: true, // 적용
+          bottom: true,
+          left: true,
+          child: Container(
+            color: Colors.red,
+            height: 300.0,
+            width: 300.0,
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![SafeArea 적용](/images/Flutter-스터디-4-5-6-7/20.png)
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: SafeArea(
+          top: true, // 미적용
+          bottom: true,
+          left: true,
+          child: Container(
+            color: Colors.red,
+            height: 300.0,
+            width: 300.0,
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![SafeArea 미적용](/images/Flutter-스터디-4-5-6-7/21.png)
+
+### 배치 관련 위젯
+
+#### Row 위젯
+
+가로로 위젯을 배치하는 데 사용된다. 여러 개의 child 위젯을 입력받는 children 매개변수를 노출한다. 주축<sup>main axis</sup>과 반대축<sup>cross axis</sup>라는 개념이 있다. 아래 그림에서 회색 동그라미들이 children에 해당한다.
+
+![Row, Column 위젯의 주축과 반대축](/images/Flutter-스터디-4-5-6-7/22.png)
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(RowWidgetExample());
+}
+
+class RowWidgetExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: SizedBox(
+          height: double.infinity,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 50.0,
+                width: 50.0,
+                color: Colors.red,
+              ),
+              const SizedBox(width: 12.0),
+              Container(
+                height: 50.0,
+                width: 50.0,
+                color: Colors.green,
+              ),
+              const SizedBox(width: 12.0),
+              Container(
+                height: 50.0,
+                width: 50.0,
+                color: Colors.blue,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![Row 위젯](/images/Flutter-스터디-4-5-6-7/23.png)
+
+#### Column 위젯
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(ColumnWidgetExample());
+}
+
+class ColumnWidgetExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: SizedBox(
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 50.0,
+                width: 50.0,
+                color: Colors.red,
+              ),
+              const SizedBox(width: 12.0),
+              Container(
+                height: 50.0,
+                width: 50.0,
+                color: Colors.green,
+              ),
+              const SizedBox(width: 12.0),
+              Container(
+                height: 50.0,
+                width: 50.0,
+                color: Colors.blue,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![Column 위젯](/images/Flutter-스터디-4-5-6-7/24.png)
+
+#### Flexible 위젯
+
+Row나 Column에서 사용하는 위젯이다. Flexible에 제공된 child가 크기를 최소한으로 차지하게 할 수 있다.
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(ColumnWidgetExample());
+}
+
+class ColumnWidgetExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: SizedBox(
+          width: double.infinity,
+          child: Column(
+            children: [
+              Flexible(
+                flex: 1,
+                child: Container(
+                  color: Colors.blue,
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: Container(
+                  color: Colors.red,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![Flexible 위젯](/images/Flutter-스터디-4-5-6-7/25.png)
+
+#### Expanded 위젯
+
+Flexible 위젯을 상속하는 위젯. 남아 있는 공간을 최대한으로 차지한다. Flexible 위젯과 다르게 남는 공간을 최대한으로 차지한다.
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(ColumnWidgetExample());
+}
+
+class ColumnWidgetExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: SizedBox(
+          width: double.infinity,
+          child: Column(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Container(
+                  color: Colors.blue,
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  color: Colors.red,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![Expanded 위젯](/images/Flutter-스터디-4-5-6-7/26.png)
+
+Expanded 위젯이 두 개이기 때문에 각 위젯이 남는 공간을 똑같이 나눠서 차지한다.
+
+#### Stack 위젯
+
+위젯을 겹치는 기능을 제공한다.
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(ColumnWidgetExample());
+}
+
+class ColumnWidgetExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: SizedBox(
+          width: double.infinity,
+          child: Stack(
+            children: [
+              Container(
+                height: 300.0,
+                width: 300.0,
+                color: Colors.red,
+              ),
+              Container(
+                height: 250.0,
+                width: 250.0,
+                color: Colors.yellow,
+              ),
+              Container(
+                height: 200.0,
+                width: 200.0,
+                color: Colors.blue,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![Expanded 위젯](/images/Flutter-스터디-4-5-6-7/27.png)
 
 ## 7장. 앱을 만들려면 알아야하는 그 밖의 지식
