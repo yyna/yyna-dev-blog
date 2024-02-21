@@ -1133,3 +1133,166 @@ class ColumnWidgetExample extends StatelessWidget {
 ![Stack 위젯](/images/Flutter-스터디-4-5-6-7/27.png)
 
 ## 7장. 앱을 만들려면 알아야하는 그 밖의 지식
+
+### 플러그인 추가 방법
+
+플러터 프로젝트 생성시 자동으로 생성되는 `pubspec.yaml` 파일에 원하는 플러그인을 추가하고 [pub get] 버튼을 눌러준다.
+
+![플러그인 추가](/images/Flutter-스터디-4-5-6-7/28.png)
+
+### 연습용 앱 만들기 : 스플래시 스크린 앱
+
+#### 사용자 정의 위젯 만들기 : 스테이트리스 위젯
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(SplashScreen()); // SplashScreen 위젯을 첫 화면으로 지정
+}
+
+class SplashScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        // 중앙 정렬 위젯
+        body: Center(
+          // 글자를 화면에 보여주는 위젯
+          child: Text('Splash Screen'),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![스테이트리스 위젯](/images/Flutter-스터디-4-5-6-7/29.png)
+
+#### 배경색 바꾸기 : Container와 BoxDecoration 위젯
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(SplashScreen());
+}
+
+class SplashScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        // 컨테이너 위젯
+        body: Container(
+          // 컨테이너를 디자인하는 클래스
+          decoration: BoxDecoration(
+            color: Colors.orange,
+          ),
+          child: Center(
+            child: Text('Splash Screen'),
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![배경색 바꾸기 : Container와 BoxDecoration 위젯](/images/Flutter-스터디-4-5-6-7/30.png)
+
+#### 이미지 출력하기 : Image 위젯
+
+1. 프로젝트 최상위에 이미지를 담을 `assets` 폴더를 추가한다.
+2. `pubspec.yaml` 파일에 `assets` 폴더를 추가한다.
+
+   ```yaml
+   flutter:
+     # ...
+     assets:
+       - assets/
+     # ...
+   ```
+
+3. [pub get] 버튼을 눌러 `flutter pub get` 을 실행한다.
+
+4. 코드 수정
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(SplashScreen());
+}
+
+class SplashScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            // 로고 배경과 같은 색으로 변경
+            color: Color(0XFFF99231),
+          ),
+          child: Center(
+            // Text 위젯을 Image 위젯으로 변경
+            child: Image.asset(
+              'assets/logo.png',
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![로고 이미지 위젯 추가](/images/Flutter-스터디-4-5-6-7/31.png)
+
+#### 위젯 정렬하기 : Row & Column 위젯
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(SplashScreen());
+}
+
+class SplashScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            color: Color(0XFFF99231),
+          ),
+          // Row 추가
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                // 가운데 정렬 추가
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/logo.png',
+                    width: 200, // 너비 추가
+                  ),
+                  // 로딩 애니메이션 추가
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation(Colors.white),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![위젯 정렬하기](/images/Flutter-스터디-4-5-6-7/32.gif)
