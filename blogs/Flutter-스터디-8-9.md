@@ -291,3 +291,99 @@ class HomeScreen extends StatelessWidget {
 ![웹뷰 구현](/images/Flutter-스터디-8-9/5.gif)
 
 ## 9장. 전자액자
+
+### 사전 지식
+
+#### 위젯 생명주기
+
+위젯이 화면에 그려지는 순간부터 삭제되는 순간까지의 주기
+
+- StatelessWidget
+
+  - `StatelessWidget`: [생성자] -> [build()]
+    - `build()`는 필수로 오버라이드해야 하는 함수
+  - 한 번 생성된 인스턴스의 build() 함수는 재실행되지 않는다. 대신 인스턴스를 아예 새로 생성한 후 기존 인스튼스를 대체해서 변경 사항을 화면에 반영한다.
+
+- StatefulWidget
+  - 상태 변경이 없는 생명주기
+    - 위젯이 화면에 나타나며 생성되고 화면에서 사라지며 삭제되는 과정
+    - `StatefulWidget`: [생성자] -> [createState()]
+      - `createState()`는 필수로 오버라이드해야 하는 함수, StatefulWidget과 연동되는 State를 생성한다.
+    - `State`: [initState()] -> [didChangeDependencies()] -> [dirty🌫️] -> [build()] -> [clean✨]
+      - `State`는 위에서 `createState()`에 의해 생성된 것이다.
+      - `initState()`는 `State`가 생성되는 순간에만 단 한번 실행된다.
+      - `BuildContext`가 제공되고 `State`가 의존하는 값이 변경되면 재실행된다.
+      - `dirty`는 `build()`가 재실행되어야 하는 상태, 실행 후 UI가 반영된다.
+      - `build()`가 완료되면 `clean` 상태로 변경된다.
+    - `State`: [clean✨] -> [deactivate()] -> [dispose()]
+      - 위젯이 위젯 트리에서 사라지면 `deactivate()`가 실행된다. `State`가 일시적 또는 영구적으로 삭제될 때 실행된다.
+      - 위젯이 영구적으로 삭제될 때 `dispose()`가 실행된다.
+  - StatefulWidget 생성자의 매개변수가 변경됐을 때 생명주기
+    - (여기 모르겠다. 뒤에 실습 해보고 다시 보기!)
+  - State 자체적으로 `build()`를 재실행할 때 생명주기
+    - `State` 클래스는 `setState()` 함수를 실행해서 `build()` 함수를 자체적으로 재실행할 수 있다.
+    - `State`: [setState()] -> [dirty🌫️] -> [build()] -> [clean✨]
+
+#### Timer
+
+Timer는 특정 시간이 지난 후에 일회성 또는 지속적으로 함수를 실행한다.
+
+```dart
+Timer.periodic(
+  Duration(seconds: 3), // 주기
+  (Timer timer) {}, // 주기가 지날 때마다 실행할 콜백 함수
+);
+```
+
+### 사전 준비
+
+1. 새 프로젝트 생성
+
+2. 이미지 추가하기
+
+   프로젝트 폴더에 `asset/img` 폴더를 생성하고 이미지를 추가한다.
+
+   ![이미지 추가](/images/Flutter-스터디-8-9/6.png)
+
+3. `pubspec.yaml` 설정
+
+   ```yaml
+   flutter:
+     uses-material-design: true
+     assets:
+       - asset/img/ # 추가
+   ```
+
+4. 프로젝트 초기화하기
+
+   ```dart
+   // lib/screen/home_screen.dart
+
+   import 'package:flutter/material.dart';
+
+   class HomeScreen extends StatelessWidget {
+     const HomeScreen({Key? key}) : super(key: key);
+
+     @override
+     Widget build(BuildContext context) {
+       return Scaffold(
+         body: Text('Home Screen'),
+       );
+     }
+   }
+   ```
+
+   ```dart
+   // lib/main.dart
+
+   import 'package:image_carousel/screen/home_screen.dart';
+   import 'package:flutter/material.dart';
+
+   void main() {
+     runApp(
+       MaterialApp(
+         home: HomeScreen(),
+       ),
+     );
+   }
+   ```
