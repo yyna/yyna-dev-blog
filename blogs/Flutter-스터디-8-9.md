@@ -299,30 +299,32 @@ class HomeScreen extends StatelessWidget {
 위젯이 화면에 그려지는 순간부터 삭제되는 순간까지의 주기
 
 - StatelessWidget
+  ![StatelessWidget의 생명주기](/images/Flutter-스터디-8-9/17.png)
 
-  - `StatelessWidget`: [생성자] -> [build()]
-    - `build()`는 필수로 오버라이드해야 하는 함수
-  - 한 번 생성된 인스턴스의 build() 함수는 재실행되지 않는다. 대신 인스턴스를 아예 새로 생성한 후 기존 인스튼스를 대체해서 변경 사항을 화면에 반영한다.
+  - `build()`는 필수로 오버라이드해야 하는 함수이다.
+  - 한 번 생성된 인스턴스의 `build()` 함수는 재실행되지 않는다. 대신 인스턴스를 아예 새로 생성한 후 기존 인스턴스를 대체해서 변경 사항을 화면에 반영한다.
 
 - StatefulWidget
-  - 상태 변경이 없는 생명주기
-    - 위젯이 화면에 나타나며 생성되고 화면에서 사라지며 삭제되는 과정
-    - `StatefulWidget`: [생성자] -> [createState()]
-      - `createState()`는 필수로 오버라이드해야 하는 함수, StatefulWidget과 연동되는 State를 생성한다.
-    - `State`: [initState()] -> [didChangeDependencies()] -> [dirty🌫️] -> [build()] -> [clean✨]
-      - `State`는 위에서 `createState()`에 의해 생성된 것이다.
-      - `initState()`는 `State`가 생성되는 순간에만 단 한번 실행된다.
-      - `BuildContext`가 제공되고 `State`가 의존하는 값이 변경되면 재실행된다.
-      - `dirty`는 `build()`가 재실행되어야 하는 상태, 실행 후 UI가 반영된다.
-      - `build()`가 완료되면 `clean` 상태로 변경된다.
-    - `State`: [clean✨] -> [deactivate()] -> [dispose()]
-      - 위젯이 위젯 트리에서 사라지면 `deactivate()`가 실행된다. `State`가 일시적 또는 영구적으로 삭제될 때 실행된다.
-      - 위젯이 영구적으로 삭제될 때 `dispose()`가 실행된다.
+
+  - 상태 변경이 없는 생명주기 (1): 위젯이 화면에 나타나며 생성되는 과정
+    ![상태 변경이 없는 생명주기 (1): 생성](/images/Flutter-스터디-8-9/13.png)
+    1. `StatefulWidget`의 생성자가 실행된다.
+    2. `createState()`는 필수로 오버라이드해야 하는 함수이며 `StatefulWidget`과 연동되는 `State`를 생성한다.
+    3. `initState()`는 `State`가 생성되는 순간에만 단 한번 실행된다.
+    4. `didChangeDependencies()`는 `initState()` 직후에 실행된다. `initState()`와 다르게 `BuildContext`가 제공된다.
+    5. `build()`가 실행 후 UI가 반영된다.
+  - 상태 변경이 없는 생명주기 (2): 위젯이 위젯 트리에서 사라지는 과정
+    ![상태 변경이 없는 생명주기 (2): 삭제](/images/Flutter-스터디-8-9/14.png)
+    1. 위젯이 위젯 트리에서 사라지면 `deactivate()`가 실행된다. 이것이 위젯의 영구 삭제를 의미하는 것은 아니다.
+    2. 위젯이 **영구적으로** 삭제될 때 `dispose()`가 실행된다. 위젯이 가진 리소스를 해제할 수 있다.
   - StatefulWidget 생성자의 매개변수가 변경됐을 때 생명주기
-    - (여기 모르겠다. 뒤에 실습 해보고 다시 보기!)
+    ![StatefulWidget 생성자의 매개변수가 변경됐을 때 생명주기](/images/Flutter-스터디-8-9/15.png)
+    - 예를 들어, 자식 위젯에게 전달되는 부모 위젯의 값을 변경했을 때 자식 위젯에서 발생하는 생명주기
+    1. `didUpdateWidget()`가 실행된다.
+    2. `build()`가 실행된다.
   - State 자체적으로 `build()`를 재실행할 때 생명주기
-    - `State` 클래스는 `setState()` 함수를 실행해서 `build()` 함수를 자체적으로 재실행할 수 있다.
-    - `State`: [setState()] -> [dirty🌫️] -> [build()] -> [clean✨]
+    ![State 자체적으로 build()를 재실행할 때 생명주기](/images/Flutter-스터디-8-9/16.png)
+    - 클래스는 `setState()` 함수를 실행해서 `build()` 함수를 자체적으로 재실행한다.
 
 #### Timer
 
@@ -387,3 +389,194 @@ Timer.periodic(
      );
    }
    ```
+
+   위 앱을 실행하면 이런 화면이 뜬다.
+
+   ![프로젝트 초기화](/images/Flutter-스터디-8-9/7.png)
+
+### 레이아웃 구상하기
+
+PageView 하나로 구성되어 있다.
+
+![레이아웃](/images/Flutter-스터디-8-9/12.png)
+
+### 구현하기
+
+#### 페이지뷰 구현하기
+
+PageView 위젯은 여러 개의 위젯을 단독 페이지로 생성하고 가로 또는 세로 스와이프로 페이지를 넘길 수 있게 하는 위젯이다.
+
+```dart
+// lib/screen/home_screen.dart
+
+import 'package:flutter/material.dart';
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // PageView 추가
+      body: PageView(
+          children: [1, 2, 3, 4, 5] // 샘플 리스트 생성
+              .map(
+                (number) => Image.asset(
+                  'asset/img/image_$number.jpeg',
+                  fit: BoxFit.cover, // 항상 전체 화면을 차지하도록
+                ),
+              )
+              .toList()),
+    );
+  }
+}
+```
+
+![페이지뷰 구현](/images/Flutter-스터디-8-9/8.gif)
+
+#### 상태바 색상 변경하기
+
+상태바: 앱 실행 중에 배터리, 시간, 와이파이 연결 상태 등을 보여주는 영역
+
+```dart
+// lib/screen/home_screen.dart
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // 추가
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light); // 상태바 색상 변경
+
+    return Scaffold(
+      body: PageView(
+          children: [1, 2, 3, 4, 5]
+              .map(
+                (number) => Image.asset(
+                  'asset/img/image_$number.jpeg',
+                  fit: BoxFit.cover,
+                ),
+              )
+              .toList()),
+    );
+  }
+}
+```
+
+![상태바 색상 변경](/images/Flutter-스터디-8-9/9.png)
+
+#### 타이머 추가하기
+
+StatelessWidget을 그대로 사용하면 Timer를 build()에 등록해야 한다. 그러면 build() 함수가 불릴 때마다 매번 새로운 Timer가 생성되어 메모리 누수가 생기게 된다. StatefulWidget의 initState()를 사용하면 State가 생성될 때 딱 한 번만 Timer를 생성할 수 있다.
+
+```dart
+// lib/screen/home_screen.dart
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'dart:async'; // async 패키지 불러오기
+
+// StatefulWidget 정의
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+// _HomeScreenState 정의
+class _HomeScreenState extends State<HomeScreen> {
+  // initState() 함수 등록
+  @override
+  void initState() {
+    super.initState(); // 부모 initState() 실행
+
+    Timer.periodic(
+      // Timer.periodic() 등록
+      Duration(seconds: 3),
+      (timer) {
+        print('실행!');
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // 생략
+  }
+}
+```
+
+initState()에 작성한 코드는 핫 리로드를 했을 때 반영이 안된다. 왜냐하면 initState()는 State가 생성될 때 딱 한 번만 실행이 되는데 이미 StatefulWidget으로 코드를 전환하는 과정에서 State를 생성해버렸기 때문이다. 따라서 재실행이 필요하다.
+
+![타이머 추가](/images/Flutter-스터디-8-9/10.png)
+
+PageController를 사용해서 PageView를 조작할 수 있다.
+
+```dart
+// lib/screen/home_screen.dart
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'dart:async';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  // PageController 생성
+  final PageController pageController = PageController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    Timer.periodic(
+      Duration(seconds: 3),
+      (timer) {
+        // 현재 페이지 가져오기
+        int? nextPage = pageController.page?.toInt();
+
+        // 페이지 값이 없을 때 예외 처리
+        if (nextPage == null) {
+          return;
+        }
+
+        // 페이지 변경
+        pageController.animateToPage(
+          (nextPage + 1) % 5,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.ease,
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyl(SystemUiOverlayStyle.light);
+
+    return Scaffold(
+      body: PageView(
+          controller: pageController, // PageController 등록
+          children: [1, 2, 3, 4, 5]
+              .map(
+                (number) => Image.asset(
+                  'asset/img/image_$number.jpeg',
+                  fit: BoxFit.cover,
+                ),
+              )
+              .toList()),
+    );
+  }
+}
+```
+
+![3초마다 자동으로 페이지 변경](/images/Flutter-스터디-8-9/11.gif)
