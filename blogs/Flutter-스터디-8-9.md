@@ -298,6 +298,8 @@ class HomeScreen extends StatelessWidget {
 
 위젯이 화면에 그려지는 순간부터 삭제되는 순간까지의 주기
 
+(👩🏻‍💻 책의 설명이 복잡해서 간소화 및 추가한 부분이 있다. [블로그 글: Lifecycle of a Stateful Widget](https://medium.com/@hadiyaaamir222/lifecycle-of-a-stateful-widget-aece2d56c946)을 참고했다.)
+
 - StatelessWidget
   ![StatelessWidget의 생명주기](/images/Flutter-스터디-8-9/17.png)
 
