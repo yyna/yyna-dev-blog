@@ -2,7 +2,7 @@ import React from 'react';
 import * as styles from './Layout.module.css';
 import { Link } from 'gatsby';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGithubAlt, faYoutube } from '@fortawesome/free-brands-svg-icons';
+import { faGithubAlt, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 
 export default function Layout({ children }) {
   return (
@@ -35,12 +35,12 @@ export default function Layout({ children }) {
           </a>
           |
           <a
-            href="https://www.youtube.com/@yyna"
+            href="https://www.linkedin.com/in/jungin/"
             target="_blank"
             rel="noreferrer"
             className={styles.category}
           >
-            <FontAwesomeIcon icon={faYoutube} />
+            <FontAwesomeIcon icon={faLinkedin} />
           </a>
         </div>
       </section>
