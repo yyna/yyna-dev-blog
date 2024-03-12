@@ -904,8 +904,6 @@ class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
       shakeThresholdGravity: threshold, // 감지 민감도
       onPhoneShake: onPhoneShake, // 감지 후 실행할 함수
     );
-
-    onPhoneShake();
   }
 
   // 감지 후 실행할 함수
