@@ -1,7 +1,7 @@
 ---
 title: 플러터 스터디 (4)
 description: 10장. 만난 지 며칠 U&I, 11장. 디지털 주사위
-date: 2024-03-06
+date: 2024-03-13
 category: tech
 published: true
 disqusIdentifier: flutter-study-4
