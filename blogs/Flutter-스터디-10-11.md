@@ -425,3 +425,511 @@ void onHeartPressed() {
 ![테스트](/images/Flutter-스터디-10-11/8.gif)
 
 ## 11장. 디지털 주사위
+
+### 사전 지식
+
+#### 가속도계
+
+특정 물체가 특정 방향으로 이동하는 가속도가 어느 정도인지를 숫자로 측정하는 기기이다. 핸드폰을 기준으로 x축은 좌우, y축은 위아래, z축은 앞뒤 움직임을 나타낸다.
+
+#### 자이로스코프
+
+직선 움직임만 측정할 수 있는 가속도계와는 달리 x, y, z축의 **회전**을 측정할 수 있다. x축은 좌우, y측은 위아래, z축은 앞뒤 회전을 나타낸다.
+
+#### Sensor_Plus 패키지
+
+`sensors_plus` 패키지를 `pubspec.yaml`에 등록하여 가속도계와 자이로스코프를 사용해볼 수 있다.
+
+```dart
+import 'package:sensors_plus/sensors_plus.dart';
+// 생략
+
+// 중력을 반영한 가속도계 값
+accelerometerEvents.listen((AccelerometerEvent event) {
+  print(event.x); // x축 수치
+  print(event.y); // y축 수치
+  print(event.z); // z축 수치
+});
+
+// 중력을 반영하지 않은 순수 사용자의 힘에 의한 가속도계 값
+userAccelerometerEvents.listen((UserAccelerometerEvent event) {
+  print(event.x); // x축 수치
+  print(event.y); // y축 수치
+  print(event.z); // z축 수치
+});
+
+gyroscopeEvents.listen((GyroscopeEvent event) {
+  print(event.x); // x축 수치
+  print(event.y); // y축 수치
+  print(event.z); // z축 수치
+});
+```
+
+### 사전 준비
+
+1. 새 프로젝트 생성
+
+2. 상수 추가하기
+
+   ```dart
+   // lib/const/colors.dart
+   import 'package:flutter/material.dart';
+
+   const backgroundColor = Color(0xFF0E0E0E); // 배경색
+   const primaryColor = Colors.white; // 주색상
+   final secondaryColor = Colors.grey[600]; // 보조 색상
+   ```
+
+   600이라는 키값을 입력하면 런타임에 색상이 계산되기 때문에 const 사용 불가능하다.
+
+3. 이미지 추가하기
+
+   ![이미지 추가](/images/Flutter-스터디-10-11/10.png)
+
+4. `pubspec.yaml` 설정
+
+   ```yaml
+   dependencies:
+     flutter:
+       sdk: flutter
+
+     cupertino_icons: ^1.0.2
+     shake: 2.2.0 # 흔들림을 감지하는 플러그인
+
+   flutter:
+     uses-material-design: true
+
+     assets:
+       - asset/img/
+   ```
+
+   [pub get]을 실행하여 변경사항을 반영한다.
+
+5. 프로젝트 초기화
+
+   ```dart
+   // lib/screen/home_screen.dart
+
+   import 'package:flutter/material.dart';
+
+   class HomeScreen extends StatelessWidget {
+     const HomeScreen({Key? key}) : super(key: key);
+
+     @override
+     Widget build(BuildContext context) {
+       return Scaffold(
+         body: Text('Home Screen'),
+       );
+     }
+   }
+   ```
+
+   ```dart
+   // lib/main.dart
+
+   import 'package:random_dice/screen/home_screen.dart';
+   import 'package:flutter/material.dart';
+   import 'package:random_dice/const/colors.dart';
+
+   void main() {
+     runApp(
+       MaterialApp(
+         theme: ThemeData(
+           scaffoldBackgroundColor: backgroundColor,
+           sliderTheme: SliderThemeData(
+             // Slider 위젯 관련 테마
+             thumbColor: primaryColor, // 노브 색상
+             activeTrackColor: primaryColor, // 노브가 이동한 트랙 색상
+             // 노브가 아직 이동하지 않은 트랙 색상
+             inactiveTrackColor: primaryColor.withOpacity(0.3),
+           ),
+           // BottomNavigationBar 위젯 관련 테마
+           bottomNavigationBarTheme: BottomNavigationBarThemeData(
+             selectedItemColor: primaryColor, // 선택 상태 색
+             unselectedItemColor: secondaryColor, // 비선택 상태 색
+             backgroundColor: backgroundColor, // 배경색
+           ),
+         ),
+         home: HomeScreen(),
+       ),
+     );
+   }
+   ```
+
+   위 앱을 실행하면 이런 화면이 뜬다. (배경색이 어두워서 Home Screen이라는 글자가 잘 안보이는 상태)
+
+   ![프로젝트 초기화](/images/Flutter-스터디-10-11/11.png)
+
+### 레이아웃 구상하기
+
+첫 번째 화면인 HomeScreen 위젯과 두 번째 화면인 SettingsScreen을 TabBarView를 이용해서 RootScreen 위젯에 위치시킨다.
+
+#### 기본 스크린 위젯
+
+![기본 스크린 위젯](/images/Flutter-스터디-10-11/16.png)
+
+이번 프로젝트에서 사용할 모든 위젯을 담고 있는 최상위 위젯이다. BottomNavigationBar에서 각 탭을 누르거나 TabBarView에서 좌우로 스크롤하여 화면을 전환한다.
+
+#### 홈 스크린 위젯
+
+![홈 스크린 위젯](/images/Flutter-스터디-10-11/17.png)
+
+#### 설정 스크린 위젯
+
+![설정 스크린 위젯](/images/Flutter-스터디-10-11/18.png)
+
+### 구현하기
+
+#### RootScreen 위젯 구현하기
+
+```dart
+// lib/screen/root_screen.dart
+
+import 'package:flutter/material.dart';
+
+class RootScreen extends StatefulWidget {
+  const RootScreen({Key? key}) : super(key: key);
+
+  @override
+  State<RootScreen> createState() => _RootScreenState();
+}
+
+// TickerProviderStateMixin 사용하기
+class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
+  TabController? controller; // 사용할 TabController 선언
+
+  @override
+  void initState() {
+    super.initState();
+
+    // 위젯이 생성될 때 단 한 번만 초기화되어야하니 initState()에서 초기화
+    controller = TabController(length: 2, vsync: this);
+    // 위젯이 생성될 때 단 한 번만 리스너가 등록되면 되니 initState()에서 실행
+    controller!.addListener(tabListener);
+  }
+
+  // 리스너로 사용할 함수
+  tabListener() {
+    setState(() {}); // controller의 속성이 변경될 때마다 build()를 재실행하도록 한다.
+  }
+
+  @override
+  dispose() {
+    // 리스너에 등록한 함수 등록 취소
+    // addListener를 사용해서 listener를 등록하면 위젯이 삭제될 때 항상 등록된 listener도 같이 삭제해줘야 한다.
+    controller!.removeListener(tabListener);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // 탭 화면을 보여줄 위젯
+      body: TabBarView(
+        controller: controller, // 컨트롤러 등록하기, TabBarView는 TabController가 필수이다
+        children: renderChildren(),
+      ),
+
+      // 아래 탭 내비게이션을 구현하는 매개변수
+      bottomNavigationBar: renderBottomNavigation(),
+    );
+  }
+
+  List<Widget> renderChildren() {
+    return [
+      Container(
+        child: Center(
+          child: Text(
+            'Tab 1',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+      Container(
+        child: Center(
+          child: Text(
+            'Tab 2',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    ];
+  }
+
+  BottomNavigationBar renderBottomNavigation() {
+    // 탭 내비게이션을 구현하는 위젯
+    return BottomNavigationBar(
+      currentIndex: controller!.index, // 현재 화면에 렌더링되는 탭의 인덱스
+      onTap: (int index) {
+        setState(() {
+          controller!.animateTo(index);
+        });
+      },
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.edgesensor_high_outlined,
+          ),
+          label: '주사위',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.settings,
+          ),
+          label: '설정',
+        )
+      ],
+    );
+  }
+}
+```
+
+```dart
+// lib/main.dart
+
+import 'package:flutter/material.dart';
+import 'package:random_dice/const/colors.dart';
+import 'package:random_dice/screen/root_screen.dart'; // home_screen에서 root_screen으로 변경
+
+void main() {
+  runApp(
+    MaterialApp(
+      theme: ThemeData(
+        scaffoldBackgroundColor: backgroundColor,
+        sliderTheme: SliderThemeData(
+          thumbColor: primaryColor,
+          activeTrackColor: primaryColor,
+          inactiveTrackColor: primaryColor.withOpacity(0.3),
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: primaryColor,
+          unselectedItemColor: secondaryColor,
+          backgroundColor: backgroundColor,
+        ),
+      ),
+      home: RootScreen(), // HomeScreen()에서 RootScreen()으로 변경
+    ),
+  );
+}
+```
+
+![RootScreen 위젯 구현하기](/images/Flutter-스터디-10-11/12.gif)
+
+#### HomeScreen 위젯 구현하기
+
+```dart
+// lib/screen/home_screen.dart
+
+import 'package:random_dice/const/colors.dart';
+import 'package:flutter/material.dart';
+
+class HomeScreen extends StatelessWidget {
+  final int number;
+
+  const HomeScreen({
+    required this.number,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // 주사위 이미지,
+        Center(
+          child: Image.asset('asset/img/$number.png'),
+        ),
+        SizedBox(height: 32.0),
+        Text(
+          '행운의 숫자',
+          style: TextStyle(
+            color: secondaryColor,
+            fontSize: 20.0,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        SizedBox(height: 12.0),
+        Text(
+          number.toString(), // 주사위 값에 해당되는 숫자
+          style: TextStyle(
+            color: primaryColor,
+            fontSize: 60.0,
+            fontWeight: FontWeight.w200,
+          ),
+        ),
+      ],
+    );
+  }
+}
+```
+
+```dart
+// lib/screen/root_screen.dart
+
+import 'package:random_dice/screen/home_screen.dart'; // 추가
+
+// 생략
+
+  List<Widget> renderChildren() {
+    return [
+      HomeScreen(number: 1), // HomeScreen을 불러와서 입력하기
+      Container(
+        child: Center(
+          child: Text(
+            'Tab 2',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    ];
+  }
+```
+
+![HomeScreen 위젯 구현하기](/images/Flutter-스터디-10-11/14.png)
+
+#### SettingsScreen 위젯 구현하기
+
+```dart
+// lib/screen/settings_screen.dart
+
+import 'package:random_dice/const/colors.dart';
+import 'package:flutter/material.dart';
+
+class SettingsScreen extends StatelessWidget {
+  final double threshold; // Slider의 현잿값
+
+// Slider가 변경될 때마다 실행되는 함수
+  final ValueChanged<double> onThresholdChange;
+
+  const SettingsScreen({
+    Key? key,
+
+    // threshold와 onThresholdChange는 SettingsScreen에서 입력
+    required this.threshold,
+    required this.onThresholdChange,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 20.0),
+          child: Row(
+            children: [
+              Text(
+                '민감도',
+                style: TextStyle(
+                  color: secondaryColor,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Slider(
+          min: 0.1, // 최솟값
+          max: 10.0, // 최댓값
+          divisions: 101, // 최솟값과 최댓값 사이 구간 개수
+          value: threshold, // 슬라이더 선택값
+          onChanged: onThresholdChange, // 값 변경 시 실행되는 함수
+          label: threshold.toStringAsFixed(1), // 표싯값
+        ),
+      ],
+    );
+  }
+}
+```
+
+```dart
+// lib/screen/root_screen.dart
+
+import 'package:random_dice/screen/settings_screen.dart'; // 추가
+
+// 생략
+
+  List<Widget> renderChildren() {
+    return [
+      HomeScreen(number: 1),
+      SettingsScreen(
+        threshold: threshold,
+        onThresholdChange: onThresholdChange,
+      )
+    ];
+  }
+
+  void onThresholdChange(double val) {
+    setState(() {
+      threshold = val;
+    });
+  }
+```
+
+![SettingsScreen 위젯 구현하기](/images/Flutter-스터디-10-11/13.gif)
+
+#### shake 플러그인 적용하기
+
+```dart
+// lib/screen/root_screen.dart
+
+// 추가
+import 'dart:math';
+import 'package:shake/shake.dart';
+
+class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
+  TabController? controller;
+  double threshold = 2.7;
+  int number = 1; // 주사위 숫자
+  ShakeDetector? shakeDetector;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = TabController(length: 2, vsync: this);
+    controller!.addListener(tabListener);
+
+    shakeDetector = ShakeDetector.autoStart(
+      // 흔들기 감지 즉시 시작
+      shakeSlopTimeMS: 100, // 감지 주기
+      shakeThresholdGravity: threshold, // 감지 민감도
+      onPhoneShake: onPhoneShake, // 감지 후 실행할 함수
+    );
+
+    onPhoneShake();
+  }
+
+  // 감지 후 실행할 함수
+  void onPhoneShake() {
+    final rand = new Random();
+
+    setState(() {
+      number = rand.nextInt(5) + 1;
+    });
+  }
+
+  tabListener() {
+    setState(() {});
+  }
+
+  @override
+  dispose() {
+    controller!.removeListener(tabListener);
+    shakeDetector!.stopListening(); // 흔들기 감지 중지
+    super.dispose();
+  }
+
+  // 생략
+}
+```
+
+![shake 플러그인 적용하기](/images/Flutter-스터디-10-11/15.png)
