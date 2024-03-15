@@ -555,3 +555,114 @@ class _AppName extends StatelessWidget {
 ![테스트하기](/images/Flutter-스터디-12-13/6.gif)
 
 ## 13장. 영상 통화
+
+### 사전 지식
+
+#### 카메라 플러그인
+
+```yaml
+# pubspec.yaml
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  camera: 0.10.5+5 # 추가
+```
+
+```dart
+// lib/main.dart
+
+import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
+
+late List<CameraDescription> _cameras;
+
+Future<void> main() async {
+  // Flutter 앱이 실행될 준비가 됐는지 확인
+  // material.dart에서 제공
+  // main() 함수의 첫 실행값이 runApp()이면 불필요
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // 핸드폰에 있는 카메라들 가져오기
+  _cameras = await availableCameras();
+  runApp(const CameraApp());
+}
+
+class CameraApp extends StatefulWidget {
+  const CameraApp({Key? key}) : super(key: key);
+
+  @override
+  State<CameraApp> createState() => _CameraAppState();
+}
+
+class _CameraAppState extends State<CameraApp> {
+  // 카메라를 제어할 수 있는 컨트롤러 선언
+  late CameraController controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    initializeCamera();
+  }
+
+  initializeCamera() async {
+    try {
+      // 가장 첫 번째로 카메라 설정하기
+      controller = CameraController(_cameras[0], ResolutionPreset.max);
+
+      // 카메라 초기화
+      await controller.initialize();
+
+      setState(() {});
+    } catch (e) {
+      // 에러났을 떄 출력
+      if (e is CameraException) {
+        switch (e.code) {
+          case 'CameraAccessDenied':
+            print('User denied camera access.');
+            break;
+          default:
+            print('Handle other errors.');
+            break;
+        }
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    // 컨트롤러 삭제
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // 카메라 초기화 상태 확인
+    if (!controller.value.isInitialized) {
+      return Container();
+    }
+    return MaterialApp(
+      // 카메라 보여주기
+      home: CameraPreview(controller),
+    );
+  }
+}
+```
+
+위 앱을 실행하면 이렇게 카메라 접근 권한을 요청하는 화면이 뜬다. (camera_plugin은 앱 이름)
+
+![카메라 접근 권한 요청](/images/Flutter-스터디-12-13/7.png)
+
+'while using the app'을 선택하여 권한을 부여하면 이렇게 카메라 화면이 뜬다. 안드로이드 에뮬레이터로 앱을 실행했는데 실제로 카메라를 켠 것처럼 화면이 조금 움직이는 모습이다. 신기신기 🤩
+
+![카메라 플러그인 테스트](/images/Flutter-스터디-12-13/8.gif)
+
+#### WebRTC
+
+WebRTC를 사용하려면 두 클라이언트 말고도 중계용 서버<sup>Signaling Server</sup>가 필요하다. 아고라 서비스를 사용해보자.
+
+![WebRTC 중계 서버](/images/Flutter-스터디-12-13/9.png)
