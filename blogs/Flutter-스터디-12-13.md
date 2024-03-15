@@ -61,7 +61,7 @@ print('233'.padLeft(3, '0')); // 233
 
 5. 네이티브 설정하기
 
-   이번 프로젝트는 갤러리 관련 권한이 필요하다. 갤러리에서 사용자가 선택한 동영상을 불러오려면 안드로이드와 iOS 모두에서 갤러리 권한을 추가해야 한다.
+   이번 프로젝트는 <u>갤러리 관련 권한</u>이 필요하다. 갤러리에서 사용자가 선택한 동영상을 불러오려면 안드로이드와 iOS 모두에서 갤러리 권한을 추가해야 한다.
 
    a. iOS 권한 추가하기
 
@@ -130,15 +130,15 @@ print('233'.padLeft(3, '0')); // 233
 
 ### 레이아웃 구상하기
 
-실질적으로 화면 하나로 구성되어 있지만 조건에 따라 알맞은 위젯을 보여준다. `renderEmpty()` 함수와 `renderVideo()` 함수 각각 동영상이 선택되기 전과 후를 담당하는 위젯을 반환한다.
+실질적으로 화면 하나로 구성되어 있지만 조건에 따라 알맞은 위젯을 보여주기로 하자. `renderEmpty()` 함수와 `renderVideo()` 함수 각각 동영상이 선택되기 전과 후를 담당하는 위젯을 반환하도록 한다.
 
 #### 첫 화면 : `renderEmpty()` 함수
 
-(이미지 추가하기)
+![renderEmpty() 함수](/images/Flutter-스터디-12-13/4.png)
 
 #### 플레이 화면 : `renderVideo()` 함수
 
-(이미지 추가하기)
+![renderVideo() 함수](/images/Flutter-스터디-12-13/5.png)
 
 ### 구현하기
 
@@ -148,7 +148,7 @@ print('233'.padLeft(3, '0')); // 233
 import 'package:flutter/material.dart';
 
 class CustomIconButton extends StatelessWidget {
-  final GestureTapCallback onPressed; // 아이콘을 눌렀을 떄 실행할 함수
+  final GestureTapCallback onPressed; // 아이콘을 눌렀을 때 실행할 함수
   final IconData iconData; // 아이콘
 
   const CustomIconButton({
@@ -284,7 +284,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                     ),
                     Expanded(
                       child:
-                          // // 동영상 재생 상태를 보여주느 슬라이더
+                          // // 동영상 재생 상태를 보여주는 슬라이더
                           Slider(
                         // 슬라이더가 이동할 때마다 실행할 함수
                         onChanged: (double val) {
@@ -292,11 +292,9 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                             Duration(seconds: val.toInt()),
                           );
                         },
-                        value: videoController!.value.position.inSeconds
-                            .toDouble(), // 동영상 재생 위치를 초 단위로 표현
+                        value: videoController!.value.position.inSeconds.toDouble(), // 동영상 재생 위치를 초 단위로 표현
                         min: 0,
-                        max: videoController!.value.duration.inSeconds
-                            .toDouble(),
+                        max: videoController!.value.duration.inSeconds.toDouble(),
                       ),
                     ),
                     renderTimeTextFromDuration(
@@ -410,6 +408,10 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
   }
 }
 ```
+
+👩🏻‍💻 initializeController 함수는 왜 반환 타입이 없을까? [Dart 공식 문서: Functions](https://dart.dev/language/functions)에 보면 아래와 같은 내용을 확인할 수 있다. 생략해도 작동은 한다는 것!
+
+> Although Effective Dart recommends type annotations for public APIs, the function still works if you omit the types:
 
 ```dart
 // lib/screen/home_screen.dart
@@ -547,5 +549,9 @@ class _AppName extends StatelessWidget {
   }
 }
 ```
+
+### 테스트하기
+
+![테스트하기](/images/Flutter-스터디-12-13/6.gif)
 
 ## 13장. 영상 통화
