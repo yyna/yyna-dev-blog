@@ -666,3 +666,171 @@ class _CameraAppState extends State<CameraApp> {
 WebRTC를 사용하려면 두 클라이언트 말고도 중계용 서버<sup>Signaling Server</sup>가 필요하다. 아고라 서비스를 사용해보자.
 
 ![WebRTC 중계 서버](/images/Flutter-스터디-12-13/9.png)
+
+#### 내비게이션
+
+플러터에서 화면을 이동할 때 사용하는 클래스이다.
+
+### 사전 준비
+
+1. 새 프로젝트 생성
+
+2. 아고라 가입 및 필요한 상수값 가져오기
+
+   ```dart
+   // lib/const/agora.dart
+
+   const APP_ID = '앱 ID';
+   const CHANNEL_NAME = '채널 이름';
+   const TEMP_TOKEN = '토큰값';
+   ```
+
+3. 이미지와 폰트 추가하기
+
+   ![이미지와 폰트 추가](/images/Flutter-스터디-12-13/10.png)
+
+4. `pubspec.yaml` 설정하기
+
+   ```yaml
+   dependencies:
+     flutter:
+       sdk: flutter
+
+     cupertino_icons: ^1.0.2
+     agora_rtc_engine: 6.2.4 # 추가
+     permission_handler: 11.0.1 # 추가
+
+   flutter:
+     uses-material-design: true
+
+     assets:
+       - asset/img/ # 추가
+   ```
+
+   [pub get] 실행!
+
+5. 네이티브 설정하기
+
+   ```xml
+   <!-- android/app/src/main/AndroidManifest.xml -->
+
+   <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools">
+       <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+       <uses-permission android:name="android.permission.INTERNET" />
+       <uses-permission android:name="android.permission.RECORD_AUDIO" />
+       <uses-permission android:name="android.permission.CAMERA" />
+       <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+       <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+       <uses-permission android:name="android.permission.BLUETOOTH" />
+       <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+       <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+       <uses-permission android:name="android.permission.WAKE_LOCK" />
+       <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" tools:ignore="ProtectedPermissions" />
+       <!-- 생략 -->
+   </manifest>
+   ```
+
+   ```gradle
+   // android/app/build.gradle
+
+   // 생략
+   android {
+       compileSdkVersion 33 // 원본: flutter.compileSdkVersion
+       ndkVersion flutter.ndkVersion
+       // 생략
+   ```
+
+   ```plist
+   <!-- ios/Runner/Info.plist -->
+
+   <?xml version="1.0" encoding="UTF-8"?>
+   <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+   <plist version="1.0">
+   <dict>
+     <!-- 생략 -->
+     <key>NSCameraUsageDescription</key>
+     <string>카메라 사용을 허가해주세요.</string>
+     <key>NSMicrophoneUsageDescription</key>
+       <string>마이크 사용을 허가해주세요.</string>
+   </dict>
+   </plist>
+   ```
+
+6. 플러터에서 권한 관리
+
+   `permission_handler` 패키지를 이용하면 두 플랫폼 모두에서 쉽게 권한을 관리할 수 있다.
+
+   ```dart
+   final permission = await Permission.camer.request(); // 카메라 권한 요청
+
+   if (permission == PermissionStatus.granted) { // 권한 상태 확인
+     print ('권한 허가 완료');
+   } else {
+     print ('권한 없음');
+   }
+   ```
+
+   ```dart
+   final resp = await [Permission.camera, Permission.microphone].request();
+   // 리스트의 모든 권한 요청
+
+   final cameraPermission = resp[Permission.camera]; // 각 권한의 상태 확인
+   final micPermission = resp[Permission.microphone];
+
+   if (cameraPermission != PermissionStatus.granted) {
+     throw '카메라 권한이 없습니다.';
+   }
+
+   if (micPermission != PermissionStatus.granted) {
+     throw '마이크 권한이 없습니다.';
+   }
+   ```
+
+7. 프로젝트 초기화하기
+
+   ```dart
+   // lib/screen/home_screen.dart
+
+   import 'package:flutter/material.dart';
+
+   class HomeScreen extends StatelessWidget {
+     const HomeScreen({Key? key}) : super(key: key);
+
+     @override
+     Widget build(BuildContext context) {
+       return Scaffold(
+         body: Text('Home Screen'),
+       );
+     }
+   }
+   ```
+
+   ```dart
+   // lib/main.dart
+
+   import 'package:video_call/screen/home_screen.dart';
+   import 'package:flutter/material.dart';
+
+   void main() {
+     runApp(
+       MaterialApp(
+         home: HomeScreen(),
+       ),
+     );
+   }
+   ```
+
+   위 앱을 실행하면 이런 화면이 뜬다.
+
+   ![프로젝트 초기화](/images/Flutter-스터디-12-13/11.png)
+
+### 레이아웃 구상하기
+
+#### 홈 스크린 위젯
+
+(이미지 추가하기)
+
+#### 캠 스크린 위젯
+
+(이미지 추가하기)
