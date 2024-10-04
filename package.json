@@ -42,6 +42,7 @@
     "react-helmet": "^6.1.0"
   },
   "devDependencies": {
+    "@netlify/plugin-gatsby": "^3.8.1",
     "gatsby-plugin-root-import": "^2.0.6"
   }
 }
