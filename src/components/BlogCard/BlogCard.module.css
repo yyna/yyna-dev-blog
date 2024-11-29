@@ -4,11 +4,15 @@
   width: calc(100% - 30px);
   display: block;
   margin-bottom: 1rem;
-  transition: all 0.7s;
-  border: 1px solid black;
+  border: 3px solid black;
   max-width: 720px;
   padding: 1rem;
   margin: 1rem auto;
+  background-color: white;
+}
+
+.card:hover {
+  border: 3px solid #8ce99a;
 }
 
 .link {

@@ -13,10 +13,6 @@ export default function Layout({ children }) {
             yyna.dev
           </Link>
           |
-          <Link to="/?category=tech" className={styles.category}>
-            tech
-          </Link>
-          |
           <Link to="/?category=book-review" className={styles.category}>
             book review
           </Link>

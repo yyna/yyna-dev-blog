@@ -13,8 +13,8 @@ export const query = graphql`
       }
     }
     allMdx(
-      sort: { fields: [frontmatter___date], order: DESC }
-      filter: { frontmatter: { published: { eq: true } } }
+      sort: {frontmatter: {date: DESC}}
+      filter: {frontmatter: {published: {eq: true}}}
     ) {
       nodes {
         frontmatter {

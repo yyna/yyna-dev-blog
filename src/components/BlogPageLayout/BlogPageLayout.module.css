@@ -42,12 +42,3 @@ blockquote {
   color: #777;
   margin: 1rem 0rem;
 }
-
-.disqus__wrapper {
-  padding: 2rem;
-}
-@media (max-width: 768px) {
-  .disqus__wrapper {
-    padding: 1rem;
-  }
-}

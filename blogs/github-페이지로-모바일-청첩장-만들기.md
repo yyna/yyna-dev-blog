@@ -4,7 +4,6 @@ description: 결혼식의 주인공은 신부라고들 하지만 이 모바일 �
 date: 2020-10-30
 category: etc
 published: true
-disqusIdentifier: mobile-wedding-invitation
 ---
 
 흔히 볼 수 있는 모바일 청첩장들은 미니멀리스트인 저에게 맘에 안드는 구석이 많습니다.

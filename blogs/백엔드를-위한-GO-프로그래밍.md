@@ -4,7 +4,6 @@ description: 천재 프로그래머 텐메이가 알려주는 Go 테크닉을 �
 date: 2024-10-04
 category: book-review
 published: true
-disqusIdentifier: go-programming
 ---
 
 ![book-cover](/images/백엔드를-위한-GO-프로그래밍/book-cover.png)

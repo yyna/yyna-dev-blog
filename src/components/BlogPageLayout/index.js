@@ -1,7 +1,6 @@
 import React from 'react';
 import { graphql } from 'gatsby';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
-import { DiscussionEmbed } from 'disqus-react';
 import { Helmet } from 'react-helmet';
 
 import * as styles from './BlogPageLayout.module.css';
@@ -22,7 +21,6 @@ export const query = graphql`
         title
         date(formatString: "YYYY-MM-DD")
         category
-        disqusIdentifier
         link
       }
       fields {
@@ -35,7 +33,7 @@ export const query = graphql`
 export default function BlogPageLayout({ data }) {
   const {
     mdx: {
-      frontmatter: { title, date, disqusIdentifier, description },
+      frontmatter: { title, date, description },
       fields: { slug },
       body,
     },
@@ -78,13 +76,6 @@ export default function BlogPageLayout({ data }) {
         <div className={styles.body}>
           <MDXRenderer>{body}</MDXRenderer>
         </div>
-      </div>
-      <div className={styles.disqus__wrapper}>
-        <DiscussionEmbed
-          shortname="yyna-dev"
-          config={{ identifier: disqusIdentifier || slug }}
-          url={`https://yyna.dev${slug}`}
-        />
       </div>
     </Layout>
   );
