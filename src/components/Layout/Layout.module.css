@@ -1,9 +1,10 @@
 .head {
   text-align: center;
-  position: -webkit-sticky; /* 사파리 브라우저 지원 */
+  position: -webkit-sticky;
+  /* 사파리 브라우저 지원 */
   position: sticky;
   top: 0;
-  background-color: white;
+  background-color: #ebfbee;
   padding: 10px 10px 0 10px;
   z-index: 1;
 }
@@ -36,4 +37,8 @@
 a.category {
   margin: 3px 9px;
   display: inline-block;
+}
+
+a.category:hover {
+  color: #8ce99a;
 }
