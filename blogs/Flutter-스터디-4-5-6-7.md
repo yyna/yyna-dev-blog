@@ -4,7 +4,6 @@ description: 4장. 다트 3.0 신규 문법, 5장. 플러터 입문하기, 6장.
 date: 2024-02-21
 category: tech
 published: true
-disqusIdentifier: flutter-study-2
 ---
 
 > 이 글은 골든래빗 《코드팩토리의 플러터 프로그래밍》의 스터디 내용 입니다.

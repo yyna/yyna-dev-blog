@@ -4,7 +4,6 @@ description: 10장. 만난 지 며칠 U&I, 11장. 디지털 주사위
 date: 2024-03-13
 category: tech
 published: true
-disqusIdentifier: flutter-study-4
 ---
 
 > 이 글은 골든래빗 《코드팩토리의 플러터 프로그래밍》의 스터디 내용 입니다.

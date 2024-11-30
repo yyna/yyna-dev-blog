@@ -4,7 +4,6 @@ description: 컨테이너 오케스트레이션, 쿠버네티스를 구성하고
 date: 2020-07-01
 category: tech
 published: true
-disqusIdentifier: kubernetes-concepts
 ---
 
 [지난 포스트](https://yyna.dev/Kubernetes-배우기-전에-Container에-대해-알아보기/)에서는 쿠버네티스를 본격적으로 공부하기에 앞서 컨테이너가 왜 필요한지에 대해 알아봤습니다.

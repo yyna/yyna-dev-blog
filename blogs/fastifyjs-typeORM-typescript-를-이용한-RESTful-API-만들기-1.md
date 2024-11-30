@@ -4,7 +4,6 @@ description: 프로젝트를 생성하고 모델을 작성해봅시다.
 date: 2020-05-07
 category: tech
 published: false
-disqusIdentifier: building-rest-api-using-fastify-typescript-typeorm-1
 ---
 
 ## 뭘 만드나

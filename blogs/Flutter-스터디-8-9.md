@@ -4,7 +4,6 @@ description: 8장. 블로그 웹 앱, 9장. 전자액자
 date: 2024-02-28
 category: tech
 published: true
-disqusIdentifier: flutter-study-3
 ---
 
 > 이 글은 골든래빗 《코드팩토리의 플러터 프로그래밍》의 스터디 내용 입니다.

@@ -20,7 +20,6 @@
     "@fortawesome/react-fontawesome": "^0.1.18",
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
-    "disqus-react": "^1.0.11",
     "gatsby": "^3.1.2",
     "gatsby-plugin-google-gtag": "^5.10.0",
     "gatsby-plugin-mdx": "^2.1.0",

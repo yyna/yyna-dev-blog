@@ -4,7 +4,6 @@ description: 컨테이너는 무엇이며 왜 필요할까요?
 date: 2024-07-11
 category: tech
 published: true
-disqusIdentifier: about-containers
 ---
 
 ### 우리는 왜 컨테이너가 필요한가

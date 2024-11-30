@@ -4,7 +4,6 @@ description: 1장 다트 입문하기, 2장 다트 객체지향 프로그래밍,
 date: 2024-02-14
 category: tech
 published: true
-disqusIdentifier: flutter-study-1
 ---
 
 > 이 글은 골든래빗 《코드팩토리의 플러터 프로그래밍》의 스터디 내용 입니다.
