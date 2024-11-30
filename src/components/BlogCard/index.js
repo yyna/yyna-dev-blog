@@ -12,7 +12,7 @@ export default function BlogCard({
 }) {
   if (!!link) {
     return (
-      <a href={link} className={styles.card} target="_blank">
+      <a href={link} className={styles.card} target="_blank" rel="noreferrer">
         <div className={styles.date}>{date}</div>
         <div className={styles.link}>{link}</div>
         <div className={`${styles.headline} ${styles[category]}`}>{title}</div>
